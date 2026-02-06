@@ -30,14 +30,14 @@ Implementar o cadastro de prompts que orientam as análises do Worker. Cada prom
 
 ## Subtarefas
 
-- [ ] 5.1 Criar `IPromptCatalogService` na camada Application (se não existir da TechSpec): `GetAllAsync`, `GetByIdAsync`, `GetByAnalysisTypeAsync`, `CreateOrUpdateAsync`
-- [ ] 5.2 Implementar `PromptCatalogService` com lógica de CRUD e validação de unicidade de `AnalysisType`
-- [ ] 5.3 Criar `PromptsController` com endpoints: `GET /api/v1/prompts`, `GET /api/v1/prompts/{id}`, `POST /api/v1/prompts`, `PUT /api/v1/prompts/{id}`
-- [ ] 5.4 Criar DTOs: `CreatePromptRequest` (analysisType, content), `UpdatePromptRequest` (content), `PromptResponse` (id, analysisType, content, createdAt, updatedAt)
-- [ ] 5.5 Implementar validação com FluentValidation: content obrigatório, analysisType deve ser válido
-- [ ] 5.6 Aplicar `[Authorize]` no controller
-- [ ] 5.7 Escrever testes unitários: CRUD operations, validação de tipo duplicado
-- [ ] 5.8 Escrever teste de integração: criar prompt → listar → atualizar → buscar por tipo
+- [x] 5.1 Criar `IPromptCatalogService` na camada Application (se não existir da TechSpec): `GetAllAsync`, `GetByIdAsync`, `GetByAnalysisTypeAsync`, `CreateOrUpdateAsync`
+- [x] 5.2 Implementar `PromptCatalogService` com lógica de CRUD e validação de unicidade de `AnalysisType`
+- [x] 5.3 Criar `PromptsController` com endpoints: `GET /api/v1/prompts`, `GET /api/v1/prompts/{id}`, `POST /api/v1/prompts`, `PUT /api/v1/prompts/{id}`
+- [x] 5.4 Criar DTOs: `CreatePromptRequest` (analysisType, content), `UpdatePromptRequest` (content), `PromptResponse` (id, analysisType, content, createdAt, updatedAt)
+- [x] 5.5 Implementar validação com FluentValidation: content obrigatório, analysisType deve ser válido
+- [x] 5.6 Aplicar `[Authorize]` no controller
+- [x] 5.7 Escrever testes unitários: CRUD operations, validação de tipo duplicado
+- [x] 5.8 Escrever teste de integração: criar prompt → listar → atualizar → buscar por tipo
 
 ## Sequenciamento
 
@@ -71,9 +71,9 @@ Implementar o cadastro de prompts que orientam as análises do Worker. Cada prom
 
 ## Critérios de Sucesso
 
-- [ ] CRUD completo funcionando para os 4 tipos de análise
-- [ ] Constraint de unicidade por `AnalysisType` respeitada
-- [ ] Endpoints protegidos por JWT (401 sem token)
-- [ ] Respostas seguem padrão Problem Details para erros
-- [ ] Mínimo 4 testes unitários passando
-- [ ] Teste de integração do fluxo completo passando
+- [x] CRUD completo funcionando para os 4 tipos de análise
+- [x] Constraint de unicidade por `AnalysisType` respeitada
+- [x] Endpoints protegidos por JWT (401 sem token)
+- [x] Respostas seguem padrão Problem Details para erros
+- [x] Mínimo 4 testes unitários passando
+- [x] Teste de integração do fluxo completo passando

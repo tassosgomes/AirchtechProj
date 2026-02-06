@@ -58,10 +58,13 @@ builder.Services.AddAuthorization();
 
 // Application Services
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IPromptCatalogService, PromptCatalogService>();
 
 // Validators
 builder.Services.AddScoped<IValidator<RegisterRequest>, RegisterRequestValidator>();
 builder.Services.AddScoped<IValidator<LoginRequest>, LoginRequestValidator>();
+builder.Services.AddScoped<IValidator<CreatePromptRequest>, CreatePromptRequestValidator>();
+builder.Services.AddScoped<IValidator<UpdatePromptRequest>, UpdatePromptRequestValidator>();
 
 var rabbitOptions = builder.Configuration.GetSection(RabbitMqOptions.SectionName).Get<RabbitMqOptions>() ?? new RabbitMqOptions();
 var rabbitConnectionString = $"amqp://{Uri.EscapeDataString(rabbitOptions.Username)}:{Uri.EscapeDataString(rabbitOptions.Password)}@{rabbitOptions.Host}:{rabbitOptions.Port}/";
