@@ -26,6 +26,8 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IPromptRepository, PromptRepository>();
         services.AddScoped<IFindingRepository, FindingRepository>();
         services.AddScoped<IInventoryRepository, InventoryRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         return services;
     }

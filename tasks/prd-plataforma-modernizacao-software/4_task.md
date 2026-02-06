@@ -31,18 +31,18 @@ Implementar autenticação própria na API com registro de usuário, login via e
 
 ## Subtarefas
 
-- [ ] 4.1 Instalar pacotes: `Microsoft.AspNetCore.Authentication.JwtBearer`, `BCrypt.Net-Next`
-- [ ] 4.2 Criar `JwtOptions` (Secret, Issuer, Audience, ExpirationMinutes) em configuração
-- [ ] 4.3 Criar `IAuthService` na camada Application com métodos: `RegisterAsync`, `LoginAsync`, `RevokeAsync`
-- [ ] 4.4 Implementar `AuthService`: hash de senha com BCrypt, geração de JWT, validação de credenciais
-- [ ] 4.5 Implementar mecanismo de revogação: lista de tokens revogados (in-memory ou tabela `revoked_tokens`)
-- [ ] 4.6 Criar `AuthController` com endpoints: `POST /api/v1/auth/register`, `POST /api/v1/auth/login`, `POST /api/v1/auth/revoke`
-- [ ] 4.7 Criar DTOs: `RegisterRequest` (email, password), `LoginRequest` (email, password), `LoginResponse` (token, expiresAt)
-- [ ] 4.8 Implementar validação com FluentValidation: e-mail válido, senha com mínimo de 8 caracteres
-- [ ] 4.9 Configurar middleware JWT no `Program.cs` (autenticação + autorização)
-- [ ] 4.10 Aplicar atributo `[Authorize]` nos controllers que exigem autenticação
-- [ ] 4.11 Escrever testes unitários: geração de JWT, validação de senha, registro duplicado, login inválido
-- [ ] 4.12 Escrever teste de integração: fluxo completo register → login → acesso autenticado → revoke
+- [x] 4.1 Instalar pacotes: `Microsoft.AspNetCore.Authentication.JwtBearer`, `BCrypt.Net-Next`
+- [x] 4.2 Criar `JwtOptions` (Secret, Issuer, Audience, ExpirationMinutes) em configuração
+- [x] 4.3 Criar `IAuthService` na camada Application com métodos: `RegisterAsync`, `LoginAsync`, `RevokeAsync`
+- [x] 4.4 Implementar `AuthService`: hash de senha com BCrypt, geração de JWT, validação de credenciais
+- [x] 4.5 Implementar mecanismo de revogação: lista de tokens revogados (in-memory ou tabela `revoked_tokens`)
+- [x] 4.6 Criar `AuthController` com endpoints: `POST /api/v1/auth/register`, `POST /api/v1/auth/login`, `POST /api/v1/auth/revoke`
+- [x] 4.7 Criar DTOs: `RegisterRequest` (email, password), `LoginRequest` (email, password), `LoginResponse` (token, expiresAt)
+- [x] 4.8 Implementar validação com FluentValidation: e-mail válido, senha com mínimo de 8 caracteres
+- [x] 4.9 Configurar middleware JWT no `Program.cs` (autenticação + autorização)
+- [x] 4.10 Aplicar atributo `[Authorize]` nos controllers que exigem autenticação
+- [x] 4.11 Escrever testes unitários: geração de JWT, validação de senha, registro duplicado, login inválido
+- [x] 4.12 Escrever teste de integração: fluxo completo register → login → acesso autenticado → revoke
 
 ## Sequenciamento
 
@@ -81,11 +81,20 @@ Implementar autenticação própria na API com registro de usuário, login via e
 
 ## Critérios de Sucesso
 
-- [ ] Registro cria usuário com senha hashificada no banco
-- [ ] Login retorna JWT válido com claims corretos
-- [ ] Token expirado é rejeitado pelo middleware
-- [ ] Token revogado é rejeitado pelo middleware
-- [ ] E-mail duplicado retorna 409 com Problem Details
-- [ ] Credenciais inválidas retornam 401
-- [ ] Mínimo 6 testes unitários passando
-- [ ] Teste de integração do fluxo completo passando
+- [x] 4.0 [Módulo de Autenticação] ✅ CONCLUÍDA
+  - [x] 4.1 Implementação completada
+  - [x] 4.2 Definição da tarefa, PRD e tech spec validados
+  - [x] 4.3 Análise de regras e conformidade verificadas
+  - [x] 4.4 Revisão de código completada
+  - [x] 4.5 Pronto para deploy
+
+### Validação Funcional
+
+- [x] Registro cria usuário com senha hashificada no banco
+- [x] Login retorna JWT válido com claims corretos
+- [x] Token expirado é rejeitado pelo middleware
+- [x] Token revogado é rejeitado pelo middleware
+- [x] E-mail duplicado retorna 409 com Problem Details
+- [x] Credenciais inválidas retornam 401
+- [x] Mínimo 6 testes unitários passando (8 implementados)
+- [x] Teste de integração do fluxo completo passando (5 testes)

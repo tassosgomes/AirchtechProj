@@ -13,8 +13,8 @@ Este documento consolida todas as tarefas necessárias para implementar a **Plat
 ### Fase 1 – Fundação (Semanas 1–3)
 - [x] 1.0 Setup dos Projetos e Infraestrutura Docker
 - [x] 2.0 Modelos de Domínio e Persistência (API)
-- [ ] 3.0 Integração RabbitMQ (API e Worker)
-- [ ] 4.0 Módulo de Autenticação
+- [x] 3.0 Integração RabbitMQ (API e Worker)
+- [x] 4.0 Módulo de Autenticação
 - [ ] 5.0 Catálogo de Prompts (CRUD)
 
 ### Fase 2 – Pipeline Core (Semanas 4–6)

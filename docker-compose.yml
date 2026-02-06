@@ -39,6 +39,7 @@ services:
       RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
       SENTRY_DSN: ${SENTRY_DSN}
+      ASPNETCORE_ENVIRONMENT: "Development"
     ports:
       - "5000:8080"
     depends_on:
