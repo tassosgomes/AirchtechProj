@@ -33,20 +33,20 @@ Implementar a camada de mensageria RabbitMQ em ambos os projetos (API e Worker).
 
 ## Subtarefas
 
-- [ ] 3.1 Instalar pacote `RabbitMQ.Client` em ambos os projetos (API Infra.Messaging e Worker Infra.Messaging)
-- [ ] 3.2 Criar classe de configuração `RabbitMqOptions` (Host, Port, Username, Password, PrefetchCount) lida de `appsettings.json` / variáveis de ambiente
-- [ ] 3.3 Criar conexão RabbitMQ compartilhada (singleton) com retry de conexão via Polly
-- [ ] 3.4 Declarar filas no startup: `analysis.jobs` (durable), `analysis.results` (durable), `analysis.jobs.dlq`
-- [ ] 3.5 Implementar DTOs de mensagem: `AnalysisJobMessage` (jobId, requestId, repositoryUrl, provider, accessToken, sharedContextJson, promptContent, analysisType, timeoutSeconds) e `AnalysisResultMessage` (jobId, requestId, analysisType, status, outputJson, durationMs, errorMessage)
-- [ ] 3.6 Implementar `RabbitMqJobPublisher` (API → `analysis.jobs`): serialização JSON, headers com requestId/correlationId
-- [ ] 3.7 Implementar `RabbitMqResultConsumer` como BackgroundService (API ← `analysis.results`): desserialização, manual ack, delegação para handler
-- [ ] 3.8 Implementar `RabbitMqJobConsumer` como BackgroundService (Worker ← `analysis.jobs`): desserialização, manual ack/nack, prefetch, delegação para handler
-- [ ] 3.9 Implementar `RabbitMqResultPublisher` (Worker → `analysis.results`): serialização JSON, headers
-- [ ] 3.10 Configurar Dead Letter Queue: `analysis.jobs` com `x-dead-letter-exchange` apontando para `analysis.jobs.dlq`; TTL progressivo para retry
-- [ ] 3.11 Implementar health check de RabbitMQ na API (`AspNetCore.HealthChecks.RabbitMQ`) e no Worker (verificação de conectividade)
-- [ ] 3.12 Registrar serviços no DI de ambos os projetos
-- [ ] 3.13 Escrever testes unitários: serialização/desserialização de mensagens, lógica de retry
-- [ ] 3.14 Escrever teste de integração: publicar e consumir mensagem em RabbitMQ real (Testcontainers)
+- [x] 3.1 Instalar pacote `RabbitMQ.Client` em ambos os projetos (API Infra.Messaging e Worker Infra.Messaging)
+- [x] 3.2 Criar classe de configuração `RabbitMqOptions` (Host, Port, Username, Password, PrefetchCount) lida de `appsettings.json` / variáveis de ambiente
+- [x] 3.3 Criar conexão RabbitMQ compartilhada (singleton) com retry de conexão via Polly
+- [x] 3.4 Declarar filas no startup: `analysis.jobs` (durable), `analysis.results` (durable), `analysis.jobs.dlq`
+- [x] 3.5 Implementar DTOs de mensagem: `AnalysisJobMessage` (jobId, requestId, repositoryUrl, provider, accessToken, sharedContextJson, promptContent, analysisType, timeoutSeconds) e `AnalysisResultMessage` (jobId, requestId, analysisType, status, outputJson, durationMs, errorMessage)
+- [x] 3.6 Implementar `RabbitMqJobPublisher` (API → `analysis.jobs`): serialização JSON, headers com requestId/correlationId
+- [x] 3.7 Implementar `RabbitMqResultConsumer` como BackgroundService (API ← `analysis.results`): desserialização, manual ack, delegação para handler
+- [x] 3.8 Implementar `RabbitMqJobConsumer` como BackgroundService (Worker ← `analysis.jobs`): desserialização, manual ack/nack, prefetch, delegação para handler
+- [x] 3.9 Implementar `RabbitMqResultPublisher` (Worker → `analysis.results`): serialização JSON, headers
+- [x] 3.10 Configurar Dead Letter Queue: `analysis.jobs` com `x-dead-letter-exchange` apontando para `analysis.jobs.dlq`; TTL progressivo para retry
+- [x] 3.11 Implementar health check de RabbitMQ na API (`AspNetCore.HealthChecks.RabbitMQ`) e no Worker (verificação de conectividade)
+- [x] 3.12 Registrar serviços no DI de ambos os projetos
+- [x] 3.13 Escrever testes unitários: serialização/desserialização de mensagens, lógica de retry
+- [x] 3.14 Escrever teste de integração: publicar e consumir mensagem em RabbitMQ real (Testcontainers)
 
 ## Sequenciamento
 
@@ -84,12 +84,12 @@ Tentativa 3 → falha → nack → DLQ permanente (sem requeue)
 
 ## Critérios de Sucesso
 
-- [ ] Filas `analysis.jobs`, `analysis.results` e `analysis.jobs.dlq` criadas automaticamente no startup
-- [ ] Publisher publica mensagem serializada em JSON com headers corretos
-- [ ] Consumer consome mensagem, desserializa e faz ack manual
-- [ ] Nack + requeue funciona para falhas transitórias
-- [ ] DLQ recebe mensagens após 3 tentativas
-- [ ] Health check de RabbitMQ funcionando na API
-- [ ] `accessToken` não aparece em nenhum log
-- [ ] Teste de integração com Testcontainers RabbitMQ passando
-- [ ] `dotnet build` sem erros em ambos os projetos
+- [x] Filas `analysis.jobs`, `analysis.results` e `analysis.jobs.dlq` criadas automaticamente no startup
+- [x] Publisher publica mensagem serializada em JSON com headers corretos
+- [x] Consumer consome mensagem, desserializa e faz ack manual
+- [x] Nack + requeue funciona para falhas transitórias
+- [x] DLQ recebe mensagens após 3 tentativas
+- [x] Health check de RabbitMQ funcionando na API
+- [x] `accessToken` não aparece em nenhum log
+- [x] Teste de integração com Testcontainers RabbitMQ passando
+- [x] `dotnet build` sem erros em ambos os projetos
