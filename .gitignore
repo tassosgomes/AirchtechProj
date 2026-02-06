@@ -7,3 +7,5 @@
 
 # OS / tooling
 .DS_Store
+
+.env

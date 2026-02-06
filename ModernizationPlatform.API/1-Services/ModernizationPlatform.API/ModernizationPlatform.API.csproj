@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.6" />
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+    <PackageReference Include="System.Text.Json" Version="8.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\2-Application\ModernizationPlatform.Application\ModernizationPlatform.Application.csproj" />
+    <ProjectReference Include="..\..\3-Domain\ModernizationPlatform.Domain\ModernizationPlatform.Domain.csproj" />
+    <ProjectReference Include="..\..\4-Infra\ModernizationPlatform.Infra\ModernizationPlatform.Infra.csproj" />
+    <ProjectReference Include="..\..\4-Infra\ModernizationPlatform.Infra.Messaging\ModernizationPlatform.Infra.Messaging.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -11,7 +11,7 @@ Este documento consolida todas as tarefas necessárias para implementar a **Plat
 ## Fases de Implementação
 
 ### Fase 1 – Fundação (Semanas 1–3)
-- [ ] 1.0 Setup dos Projetos e Infraestrutura Docker
+- [x] 1.0 Setup dos Projetos e Infraestrutura Docker
 - [ ] 2.0 Modelos de Domínio e Persistência (API)
 - [ ] 3.0 Integração RabbitMQ (API e Worker)
 - [ ] 4.0 Módulo de Autenticação

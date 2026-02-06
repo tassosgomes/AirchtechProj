@@ -1,5 +1,5 @@
 ---
-status: pending
+status: completed
 parallelizable: false
 blocked_by: []
 ---
@@ -31,16 +31,25 @@ Criar a estrutura base dos dois projetos independentes (API Orquestradora e Work
 
 ## Subtarefas
 
-- [ ] 1.1 Criar estrutura da solution API (`ModernizationPlatform.API/`) com projetos: `ModernizationPlatform.API` (1-Services), `ModernizationPlatform.Application` (2-Application), `ModernizationPlatform.Domain` (3-Domain), `ModernizationPlatform.Infra` (4-Infra), `ModernizationPlatform.Infra.Messaging` (4-Infra), `ModernizationPlatform.API.UnitTests` (5-Tests), `ModernizationPlatform.API.IntegrationTests` (5-Tests)
-- [ ] 1.2 Criar estrutura da solution Worker (`ModernizationPlatform.Worker/`) com projetos: `ModernizationPlatform.Worker` (1-Services), `ModernizationPlatform.Worker.Application` (2-Application), `ModernizationPlatform.Worker.Domain` (3-Domain), `ModernizationPlatform.Worker.Infra.CopilotSdk` (4-Infra), `ModernizationPlatform.Worker.Infra.Messaging` (4-Infra), `ModernizationPlatform.Worker.UnitTests` (5-Tests), `ModernizationPlatform.Worker.IntegrationTests` (5-Tests)
-- [ ] 1.3 Configurar referências entre projetos (ex.: Application referencia Domain; Infra referencia Application; Services referencia todos)
-- [ ] 1.4 Adicionar pacotes NuGet base: `Microsoft.AspNetCore.OpenApi`, `Swashbuckle.AspNetCore`, `Serilog.AspNetCore`, `System.Text.Json` em ambos os projetos
-- [ ] 1.5 Criar `Program.cs` mínimo para API (ASP.NET Core Web API) e Worker (Worker Service / Background Service)
-- [ ] 1.6 Criar `Dockerfile` multi-stage para API e Worker (build + runtime)
-- [ ] 1.7 Criar `docker-compose.yml` com serviços: `api` (porta 5000), `worker`, `rabbitmq` (imagem `rabbitmq:3-management`, portas 5672/15672), `db` (PostgreSQL, porta 5432), `frontend` (porta 3000)
-- [ ] 1.8 Criar `.env.example` com variáveis: `POSTGRES_*`, `RABBITMQ_*`, `JWT_SECRET`, `SENTRY_DSN`, `COPILOT_*`
-- [ ] 1.9 Validar que `docker compose build` e `docker compose up` funcionam sem erros
-- [ ] 1.10 Criar `README.md` na raiz com instruções básicas de setup
+- [x] 1.1 Criar estrutura da solution API (`ModernizationPlatform.API/`) com projetos: `ModernizationPlatform.API` (1-Services), `ModernizationPlatform.Application` (2-Application), `ModernizationPlatform.Domain` (3-Domain), `ModernizationPlatform.Infra` (4-Infra), `ModernizationPlatform.Infra.Messaging` (4-Infra), `ModernizationPlatform.API.UnitTests` (5-Tests), `ModernizationPlatform.API.IntegrationTests` (5-Tests)
+- [x] 1.2 Criar estrutura da solution Worker (`ModernizationPlatform.Worker/`) com projetos: `ModernizationPlatform.Worker` (1-Services), `ModernizationPlatform.Worker.Application` (2-Application), `ModernizationPlatform.Worker.Domain` (3-Domain), `ModernizationPlatform.Worker.Infra.CopilotSdk` (4-Infra), `ModernizationPlatform.Worker.Infra.Messaging` (4-Infra), `ModernizationPlatform.Worker.UnitTests` (5-Tests), `ModernizationPlatform.Worker.IntegrationTests` (5-Tests)
+- [x] 1.3 Configurar referências entre projetos (ex.: Application referencia Domain; Infra referencia Application; Services referencia todos)
+- [x] 1.4 Adicionar pacotes NuGet base: `Microsoft.AspNetCore.OpenApi`, `Swashbuckle.AspNetCore`, `Serilog.AspNetCore`, `System.Text.Json` em ambos os projetos
+- [x] 1.5 Criar `Program.cs` mínimo para API (ASP.NET Core Web API) e Worker (Worker Service / Background Service)
+- [x] 1.6 Criar `Dockerfile` multi-stage para API e Worker (build + runtime)
+- [x] 1.7 Criar `docker-compose.yml` com serviços: `api` (porta 5000), `worker`, `rabbitmq` (imagem `rabbitmq:3-management`, portas 5672/15672), `db` (PostgreSQL, porta 5432), `frontend` (porta 3000)
+- [x] 1.8 Criar `.env.example` com variáveis: `POSTGRES_*`, `RABBITMQ_*`, `JWT_SECRET`, `SENTRY_DSN`, `COPILOT_*`
+- [x] 1.9 Validar que `docker compose build` e `docker compose up` funcionam sem erros
+- [x] 1.10 Criar `README.md` na raiz com instruções básicas de setup
+
+## Checklist de Conclusão
+
+- [x] 1.0 Setup dos Projetos e Infraestrutura Docker ✅ CONCLUÍDA
+    - [x] 1.1 Implementação completada
+    - [x] 1.2 Definição da tarefa, PRD e tech spec validados
+    - [x] 1.3 Análise de regras e conformidade verificadas
+    - [x] 1.4 Revisão de código completada
+    - [x] 1.5 Pronto para deploy
 
 ## Sequenciamento
 
@@ -132,10 +141,10 @@ ModernizationPlatform.Worker/
 
 ## Critérios de Sucesso
 
-- [ ] Ambas as solutions compilam sem erros (`dotnet build`)
-- [ ] `docker compose build` executa sem erros
-- [ ] `docker compose up` sobe todos os 5 serviços
-- [ ] API responde em `http://localhost:5000` (mesmo que apenas 200 OK)
-- [ ] RabbitMQ Management UI acessível em `http://localhost:15672`
-- [ ] PostgreSQL aceita conexão na porta 5432
-- [ ] Estrutura de pastas segue exatamente o padrão numerado da TechSpec
+- [x] Ambas as solutions compilam sem erros (`dotnet build`)
+- [x] `docker compose build` executa sem erros
+- [x] `docker compose up` sobe todos os 5 serviços
+- [x] API responde em `http://localhost:5000` (mesmo que apenas 200 OK)
+- [x] RabbitMQ Management UI acessível em `http://localhost:15672`
+- [x] PostgreSQL aceita conexão na porta 5432
+- [x] Estrutura de pastas segue exatamente o padrão numerado da TechSpec
