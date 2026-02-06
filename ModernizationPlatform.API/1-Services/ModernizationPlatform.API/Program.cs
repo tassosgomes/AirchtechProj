@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using ModernizationPlatform.API.Handlers;
+using ModernizationPlatform.API.BackgroundServices;
 using ModernizationPlatform.Application.Commands;
 using ModernizationPlatform.Application.Configuration;
 using ModernizationPlatform.Application.DTOs;
@@ -24,6 +24,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddRabbitMqMessaging(builder.Configuration);
+
+builder.Services.AddOptions<OrchestrationOptions>()
+    .Bind(builder.Configuration.GetSection(OrchestrationOptions.SectionName))
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
 
 // JWT Configuration
 var jwtOptions = builder.Configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>() ?? new JwtOptions();
@@ -66,6 +71,10 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IPromptCatalogService, PromptCatalogService>();
 builder.Services.AddScoped<ICommandHandler<CreateAnalysisCommand, AnalysisRequest>, CreateAnalysisCommandHandler>();
+builder.Services.AddSingleton<OrchestrationStateStore>();
+builder.Services.AddSingleton<IOrchestrationService, OrchestrationService>();
+builder.Services.AddScoped<IConsolidationService, NoOpConsolidationService>();
+builder.Services.AddHostedService<OrchestrationBackgroundService>();
 
 // Discovery Services
 builder.Services.AddScoped<IDiscoveryService, ModernizationPlatform.Infra.Discovery.DiscoveryService>();
@@ -87,7 +96,7 @@ var rabbitConnectionString = $"amqp://{Uri.EscapeDataString(rabbitOptions.Userna
 builder.Services.AddHealthChecks()
     .AddRabbitMQ(rabbitConnectionString, name: "rabbitmq");
 
-builder.Services.AddSingleton<IAnalysisResultHandler, DefaultAnalysisResultHandler>();
+builder.Services.AddSingleton<IAnalysisResultHandler, OrchestrationResultHandler>();
 
 var app = builder.Build();
 

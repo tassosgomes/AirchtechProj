@@ -27,4 +27,28 @@ public class AnalysisJobTests
 
         action.Should().Throw<ArgumentException>();
     }
+
+    [Fact]
+    public void ResetForRetry_WhenJobFailed_ShouldReturnToPending()
+    {
+        var job = new AnalysisJob(Guid.NewGuid(), AnalysisType.Security);
+        job.Start();
+        job.Fail("{}", TimeSpan.FromSeconds(1));
+
+        job.ResetForRetry();
+
+        job.Status.Should().Be(JobStatus.Pending);
+        job.OutputJson.Should().BeNull();
+        job.Duration.Should().BeNull();
+    }
+
+    [Fact]
+    public void ResetForRetry_WhenJobNotFailed_ShouldThrow()
+    {
+        var job = new AnalysisJob(Guid.NewGuid(), AnalysisType.Security);
+
+        var action = () => job.ResetForRetry();
+
+        action.Should().Throw<InvalidOperationException>();
+    }
 }

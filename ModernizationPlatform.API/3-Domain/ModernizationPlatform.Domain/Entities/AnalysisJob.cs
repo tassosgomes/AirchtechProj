@@ -62,6 +62,18 @@ public class AnalysisJob
         Status = JobStatus.Failed;
     }
 
+    public void ResetForRetry()
+    {
+        if (Status != JobStatus.Failed)
+        {
+            throw new InvalidOperationException("Job must be failed before retry.");
+        }
+
+        OutputJson = null;
+        Duration = null;
+        Status = JobStatus.Pending;
+    }
+
     private void EnsureStatus(JobStatus expected, string action)
     {
         if (Status != expected)

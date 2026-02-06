@@ -17,7 +17,9 @@ public class Repository<T> : IRepository<T> where T : class
 
     public virtual async Task<T?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        return await DbSet.FindAsync([id], cancellationToken);
+        // Using FirstOrDefaultAsync with EF.Property for compatibility with generic types
+        return await DbSet
+            .FirstOrDefaultAsync(e => EF.Property<Guid>(e, "Id") == id, cancellationToken);
     }
 
     public virtual async Task<IReadOnlyList<T>> GetAllAsync(CancellationToken cancellationToken)

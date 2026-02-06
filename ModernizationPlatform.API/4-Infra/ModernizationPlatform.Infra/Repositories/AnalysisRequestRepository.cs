@@ -22,6 +22,15 @@ public sealed class AnalysisRequestRepository : Repository<AnalysisRequest>, IAn
             .ToListAsync(cancellationToken);
     }
 
+    public async Task<IReadOnlyList<AnalysisRequest>> GetQueuedAsync(int size, CancellationToken cancellationToken)
+    {
+        return await DbSet.AsNoTracking()
+            .Where(request => request.Status == RequestStatus.Queued)
+            .OrderBy(request => request.CreatedAt)
+            .Take(size)
+            .ToListAsync(cancellationToken);
+    }
+
     public async Task<int> CountAsync(CancellationToken cancellationToken)
     {
         return await DbSet.AsNoTracking().CountAsync(cancellationToken);

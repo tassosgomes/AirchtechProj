@@ -16,16 +16,16 @@ namespace ModernizationPlatform.API.Controllers;
 [Authorize]
 public sealed class AnalysisRequestsController : ControllerBase
 {
-    private readonly ICommandHandler<CreateAnalysisCommand, AnalysisRequest> _createHandler;
+    private readonly IOrchestrationService _orchestrationService;
     private readonly IAnalysisRequestRepository _analysisRequestRepository;
     private readonly IAnalysisJobRepository _analysisJobRepository;
 
     public AnalysisRequestsController(
-        ICommandHandler<CreateAnalysisCommand, AnalysisRequest> createHandler,
+        IOrchestrationService orchestrationService,
         IAnalysisRequestRepository analysisRequestRepository,
         IAnalysisJobRepository analysisJobRepository)
     {
-        _createHandler = createHandler;
+        _orchestrationService = orchestrationService;
         _analysisRequestRepository = analysisRequestRepository;
         _analysisJobRepository = analysisJobRepository;
     }
@@ -46,7 +46,7 @@ public sealed class AnalysisRequestsController : ControllerBase
                 request.AccessToken,
                 request.SelectedTypes);
 
-            var analysisRequest = await _createHandler.HandleAsync(command, cancellationToken);
+            var analysisRequest = await _orchestrationService.CreateRequestAsync(command, cancellationToken);
             var queuePosition = await GetQueuePositionAsync(analysisRequest, cancellationToken);
 
             var response = MapResponse(analysisRequest, queuePosition);
