@@ -1,5 +1,5 @@
 ---
-status: pending
+status: completed
 parallelizable: false
 blocked_by: ["6.0", "7.0", "8.0"]
 ---
@@ -31,19 +31,19 @@ Implementar o motor de orquestração que coordena o pipeline completo: pegar so
 
 ## Subtarefas
 
-- [ ] 9.1 Criar `IOrchestrationService` na camada Application: `CreateRequestAsync`, `ProcessPendingRequestsAsync`
-- [ ] 9.2 Implementar `OrchestrationBackgroundService` (hosted service) que periodicamente busca solicitações QUEUED e inicia processamento
-- [ ] 9.3 Implementar fluxo de Discovery: chamar `IDiscoveryService` → atualizar status para DISCOVERY_RUNNING → salvar SharedContext → atualizar status
-- [ ] 9.4 Implementar publicação de jobs: para cada tipo de análise selecionado, buscar prompt no catálogo → criar `AnalysisJob` no banco → publicar `AnalysisJobMessage` no RabbitMQ
-- [ ] 9.5 Implementar sequenciamento de pilares por repositório: publicar 1 job por vez, aguardar resultado antes de publicar o próximo
-- [ ] 9.6 Implementar consumo de resultados (via `RabbitMqResultConsumer` da tarefa 3.0): atualizar `AnalysisJob` no banco com output e status
-- [ ] 9.7 Implementar transição para consolidação: quando todos os jobs de um request forem COMPLETED, atualizar status para CONSOLIDATING
-- [ ] 9.8 Implementar retry: se job falha e `retryCount < maxRetries`, republish com incremento; caso contrário, marcar como FAILED
-- [ ] 9.9 Implementar tratamento de falha global: se Discovery falha, marcar request como FAILED; se análise crítica falha após retries, marcar request como FAILED
-- [ ] 9.10 Implementar suporte a paralelismo por repositório: cada request é processado em uma "thread" lógica independente (SemaphoreSlim ou similar)
-- [ ] 9.11 Propagar `accessToken` da solicitação para as mensagens RabbitMQ (em memória, nunca persistido)
-- [ ] 9.12 Escrever testes unitários: transições de estado, lógica de retry, sequenciamento de pilares
-- [ ] 9.13 Escrever teste de integração: fluxo completo QUEUED → DISCOVERY → ANALYSIS → CONSOLIDATING (com mocks)
+- [x] 9.1 Criar `IOrchestrationService` na camada Application: `CreateRequestAsync`, `ProcessPendingRequestsAsync`
+- [x] 9.2 Implementar `OrchestrationBackgroundService` (hosted service) que periodicamente busca solicitações QUEUED e inicia processamento
+- [x] 9.3 Implementar fluxo de Discovery: chamar `IDiscoveryService` → atualizar status para DISCOVERY_RUNNING → salvar SharedContext → atualizar status
+- [x] 9.4 Implementar publicação de jobs: para cada tipo de análise selecionado, buscar prompt no catálogo → criar `AnalysisJob` no banco → publicar `AnalysisJobMessage` no RabbitMQ
+- [x] 9.5 Implementar sequenciamento de pilares por repositório: publicar 1 job por vez, aguardar resultado antes de publicar o próximo
+- [x] 9.6 Implementar consumo de resultados (via `RabbitMqResultConsumer` da tarefa 3.0): atualizar `AnalysisJob` no banco com output e status
+- [x] 9.7 Implementar transição para consolidação: quando todos os jobs de um request forem COMPLETED, atualizar status para CONSOLIDATING
+- [x] 9.8 Implementar retry: se job falha e `retryCount < maxRetries`, republish com incremento; caso contrário, marcar como FAILED
+- [x] 9.9 Implementar tratamento de falha global: se Discovery falha, marcar request como FAILED; se análise crítica falha após retries, marcar request como FAILED
+- [x] 9.10 Implementar suporte a paralelismo por repositório: cada request é processado em uma "thread" lógica independente (SemaphoreSlim ou similar)
+- [x] 9.11 Propagar `accessToken` da solicitação para as mensagens RabbitMQ (em memória, nunca persistido)
+- [x] 9.12 Escrever testes unitários: transições de estado, lógica de retry, sequenciamento de pilares
+- [x] 9.13 Escrever teste de integração: fluxo completo QUEUED → DISCOVERY → ANALYSIS → CONSOLIDATING (com mocks)
 
 ## Sequenciamento
 
@@ -107,12 +107,21 @@ Repositório B: Discovery → [Security] → [Documentation] → Consolidation
 
 ## Critérios de Sucesso
 
-- [ ] Solicitações QUEUED são processadas automaticamente pelo BackgroundService
-- [ ] Transições de estado ocorrem corretamente (QUEUED → ... → COMPLETED)
-- [ ] Discovery é executado antes das análises
-- [ ] Pilares são executados sequencialmente por repositório
-- [ ] Múltiplos repositórios são processados em paralelo
-- [ ] Retry funciona: job republished até maxRetries, depois FAILED
-- [ ] `accessToken` propagado via mensagem mas nunca persistido
-- [ ] Mínimo 6 testes unitários passando
-- [ ] Teste de integração do fluxo completo passando
+- [x] Solicitações QUEUED são processadas automaticamente pelo BackgroundService
+- [x] Transições de estado ocorrem corretamente (QUEUED → ... → COMPLETED)
+- [x] Discovery é executado antes das análises
+- [x] Pilares são executados sequencialmente por repositório
+- [x] Múltiplos repositórios são processados em paralelo
+- [x] Retry funciona: job republished até maxRetries, depois FAILED
+- [x] `accessToken` propagado via mensagem mas nunca persistido
+- [x] Mínimo 6 testes unitários passando
+- [x] Teste de integração do fluxo completo passando
+
+## Checklist de Conclusão
+
+- [x] 9.0 Orquestração do Pipeline ✅ CONCLUÍDA
+  - [x] 9.1 Implementação completada
+  - [x] 9.2 Definição da tarefa, PRD e tech spec validados
+  - [x] 9.3 Análise de regras e conformidade verificadas
+  - [x] 9.4 Revisão de código completada
+  - [x] 9.5 Pronto para deploy

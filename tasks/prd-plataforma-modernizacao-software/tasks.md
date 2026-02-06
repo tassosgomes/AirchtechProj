@@ -15,13 +15,13 @@ Este documento consolida todas as tarefas necessárias para implementar a **Plat
 - [x] 2.0 Modelos de Domínio e Persistência (API)
 - [x] 3.0 Integração RabbitMQ (API e Worker)
 - [x] 4.0 Módulo de Autenticação
-- [ ] 5.0 Catálogo de Prompts (CRUD)
+- [x] 5.0 Catálogo de Prompts (CRUD)
 
 ### Fase 2 – Pipeline Core (Semanas 4–6)
-- [ ] 6.0 API de Solicitação de Análise
-- [ ] 7.0 Discovery Service
-- [ ] 8.0 Worker Genérico – Execução de Análise
-- [ ] 9.0 Orquestração do Pipeline
+- [x] 6.0 API de Solicitação de Análise
+- [x] 7.0 Discovery Service
+- [x] 8.0 Worker Genérico – Execução de Análise
+- [x] 9.0 Orquestração do Pipeline
 
 ### Fase 3 – Consolidação e Inventário (Semanas 7–8)
 - [ ] 10.0 Motor de Consolidação
