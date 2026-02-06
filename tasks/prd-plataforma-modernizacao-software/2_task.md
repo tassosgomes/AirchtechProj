@@ -1,5 +1,5 @@
 ---
-status: pending
+status: completed
 parallelizable: true
 blocked_by: ["1.0"]
 ---
@@ -32,20 +32,20 @@ Implementar todas as entidades de domínio, enums, interfaces de repositório, c
 
 ## Subtarefas
 
-- [ ] 2.1 Criar enums no projeto Domain: `AnalysisType` (Obsolescence, Security, Observability, Documentation), `Severity` (Critical, High, Medium, Low, Informative), `RequestStatus` (Queued, DiscoveryRunning, AnalysisRunning, Consolidating, Completed, Failed), `JobStatus` (Pending, Running, Completed, Failed), `SourceProvider` (GitHub, AzureDevOps)
-- [ ] 2.2 Criar entidade `User` com propriedades: Id (UUID), Email, PasswordHash, CreatedAt
-- [ ] 2.3 Criar entidade `AnalysisRequest` com propriedades: Id, RepositoryUrl, Provider, Status, SelectedTypes (List), RetryCount, CreatedAt, CompletedAt — incluir métodos de transição de estado
-- [ ] 2.4 Criar entidade `SharedContext` com propriedades: Id, RequestId, Version, Languages, Frameworks, Dependencies, DirectoryStructureJson, CreatedAt
-- [ ] 2.5 Criar entidade `AnalysisJob` com propriedades: Id, RequestId, Type, Status, OutputJson, Duration
-- [ ] 2.6 Criar entidade `Finding` com propriedades: Id, JobId, Severity, Category, Title, Description, FilePath
-- [ ] 2.7 Criar entidade `Prompt` com propriedades: Id, AnalysisType, Content, CreatedAt, UpdatedAt
-- [ ] 2.8 Criar entidade `Repository` (inventário) com propriedades: Id, Url, Name, Provider, LastAnalysisAt
-- [ ] 2.9 Criar interfaces de repositório: `IRepository<T>` (genérico), `IAnalysisRequestRepository`, `IPromptRepository`, `IFindingRepository`, `IInventoryRepository`
-- [ ] 2.10 Configurar `AppDbContext` com mapeamentos Fluent API para todas as entidades (nomes de tabela, índices, constraints)
-- [ ] 2.11 Instalar pacotes: `Npgsql.EntityFrameworkCore.PostgreSQL`, `Microsoft.EntityFrameworkCore.Design`
-- [ ] 2.12 Criar migration inicial com todas as tabelas
-- [ ] 2.13 Implementar repositórios concretos na camada Infra
-- [ ] 2.14 Escrever testes unitários: validações de entidades (transições de estado inválidas, campos obrigatórios)
+- [x] 2.1 Criar enums no projeto Domain: `AnalysisType` (Obsolescence, Security, Observability, Documentation), `Severity` (Critical, High, Medium, Low, Informative), `RequestStatus` (Queued, DiscoveryRunning, AnalysisRunning, Consolidating, Completed, Failed), `JobStatus` (Pending, Running, Completed, Failed), `SourceProvider` (GitHub, AzureDevOps)
+- [x] 2.2 Criar entidade `User` com propriedades: Id (UUID), Email, PasswordHash, CreatedAt
+- [x] 2.3 Criar entidade `AnalysisRequest` com propriedades: Id, RepositoryUrl, Provider, Status, SelectedTypes (List), RetryCount, CreatedAt, CompletedAt — incluir métodos de transição de estado
+- [x] 2.4 Criar entidade `SharedContext` com propriedades: Id, RequestId, Version, Languages, Frameworks, Dependencies, DirectoryStructureJson, CreatedAt
+- [x] 2.5 Criar entidade `AnalysisJob` com propriedades: Id, RequestId, Type, Status, OutputJson, Duration
+- [x] 2.6 Criar entidade `Finding` com propriedades: Id, JobId, Severity, Category, Title, Description, FilePath
+- [x] 2.7 Criar entidade `Prompt` com propriedades: Id, AnalysisType, Content, CreatedAt, UpdatedAt
+- [x] 2.8 Criar entidade `Repository` (inventário) com propriedades: Id, Url, Name, Provider, LastAnalysisAt
+- [x] 2.9 Criar interfaces de repositório: `IRepository<T>` (genérico), `IAnalysisRequestRepository`, `IPromptRepository`, `IFindingRepository`, `IInventoryRepository`
+- [x] 2.10 Configurar `AppDbContext` com mapeamentos Fluent API para todas as entidades (nomes de tabela, índices, constraints)
+- [x] 2.11 Instalar pacotes: `Npgsql.EntityFrameworkCore.PostgreSQL`, `Microsoft.EntityFrameworkCore.Design`
+- [x] 2.12 Criar migration inicial com todas as tabelas
+- [x] 2.13 Implementar repositórios concretos na camada Infra
+- [x] 2.14 Escrever testes unitários: validações de entidades (transições de estado inválidas, campos obrigatórios)
 
 ## Sequenciamento
 
@@ -94,11 +94,20 @@ public class AnalysisRequest
 
 ## Critérios de Sucesso
 
-- [ ] Todas as 7 entidades implementadas com propriedades e métodos de domínio
-- [ ] Todos os 5 enums implementados
-- [ ] EF Core DbContext configurado com Fluent API para todas as entidades
-- [ ] Migration inicial criada e aplicável (`dotnet ef database update`)
-- [ ] Índices definidos na TechSpec presentes na migration
-- [ ] Repositórios concretos implementados
-- [ ] Testes unitários passando para validações de entidades (mínimo 5 testes)
-- [ ] `dotnet build` da solution API sem erros
+- [x] Todas as 7 entidades implementadas com propriedades e métodos de domínio
+- [x] Todos os 5 enums implementados
+- [x] EF Core DbContext configurado com Fluent API para todas as entidades
+- [x] Migration inicial criada e aplicável (`dotnet ef database update`)
+- [x] Índices definidos na TechSpec presentes na migration
+- [x] Repositórios concretos implementados
+- [x] Testes unitários passando para validações de entidades (mínimo 5 testes)
+- [x] `dotnet build` da solution API sem erros
+
+## Checklist de Conclusão
+
+- [x] 2.0 Modelos de Domínio e Persistência (API) ✅ CONCLUÍDA
+    - [x] 2.1 Implementação completada
+    - [x] 2.2 Definição da tarefa, PRD e tech spec validados
+    - [x] 2.3 Análise de regras e conformidade verificadas
+    - [x] 2.4 Revisão de código completada
+    - [x] 2.5 Pronto para deploy

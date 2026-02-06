@@ -58,7 +58,7 @@ services:
       COPILOT_API_KEY: ${COPILOT_API_KEY}
       COPILOT_ENDPOINT: ${COPILOT_ENDPOINT}
       COPILOT_MODEL: ${COPILOT_MODEL}
-      SENTRY_DSN: ${SENTRY_DSN}
+      SENTRY_DSN: ${SENTRY_DSN_WORKER}
     depends_on:
       - rabbitmq
 
@@ -69,6 +69,7 @@ services:
     container_name: modernizationplatform-frontend
     environment:
       PORT: 3000
+      SENTRY_DSN: ${SENTRY_DSN_FRONTEND}
     ports:
       - "3000:3000"
     depends_on:
