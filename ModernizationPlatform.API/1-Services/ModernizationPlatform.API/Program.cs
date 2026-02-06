@@ -1,19 +1,25 @@
 using System.Text;
+using System.Text.Json.Serialization;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using ModernizationPlatform.API.Handlers;
+using ModernizationPlatform.Application.Commands;
 using ModernizationPlatform.Application.Configuration;
 using ModernizationPlatform.Application.DTOs;
+using ModernizationPlatform.Application.Handlers;
 using ModernizationPlatform.Application.Interfaces;
 using ModernizationPlatform.Application.Services;
 using ModernizationPlatform.Application.Validators;
+using ModernizationPlatform.Domain.Entities;
 using ModernizationPlatform.Infra.Messaging;
 using ModernizationPlatform.Infra.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddPersistence(builder.Configuration);
@@ -59,12 +65,14 @@ builder.Services.AddAuthorization();
 // Application Services
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IPromptCatalogService, PromptCatalogService>();
+builder.Services.AddScoped<ICommandHandler<CreateAnalysisCommand, AnalysisRequest>, CreateAnalysisCommandHandler>();
 
 // Validators
 builder.Services.AddScoped<IValidator<RegisterRequest>, RegisterRequestValidator>();
 builder.Services.AddScoped<IValidator<LoginRequest>, LoginRequestValidator>();
 builder.Services.AddScoped<IValidator<CreatePromptRequest>, CreatePromptRequestValidator>();
 builder.Services.AddScoped<IValidator<UpdatePromptRequest>, UpdatePromptRequestValidator>();
+builder.Services.AddScoped<IValidator<CreateAnalysisCommand>, CreateAnalysisCommandValidator>();
 
 var rabbitOptions = builder.Configuration.GetSection(RabbitMqOptions.SectionName).Get<RabbitMqOptions>() ?? new RabbitMqOptions();
 var rabbitConnectionString = $"amqp://{Uri.EscapeDataString(rabbitOptions.Username)}:{Uri.EscapeDataString(rabbitOptions.Password)}@{rabbitOptions.Host}:{rabbitOptions.Port}/";

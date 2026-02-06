@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -16,7 +17,7 @@ public class AuthService : IAuthService
     private readonly IUserRepository _userRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly JwtOptions _jwtOptions;
-    private readonly HashSet<string> _revokedTokens;
+    private static readonly ConcurrentDictionary<string, byte> RevokedTokens = new();
 
     public AuthService(
         IUserRepository userRepository,
@@ -26,7 +27,6 @@ public class AuthService : IAuthService
         _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
         _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
         _jwtOptions = jwtOptions?.Value ?? throw new ArgumentNullException(nameof(jwtOptions));
-        _revokedTokens = new HashSet<string>();
     }
 
     public async Task<Guid> RegisterAsync(RegisterRequest request, CancellationToken cancellationToken)
@@ -71,13 +71,13 @@ public class AuthService : IAuthService
 
     public Task RevokeAsync(string token, CancellationToken cancellationToken)
     {
-        _revokedTokens.Add(token);
+        RevokedTokens.TryAdd(token, 0);
         return Task.CompletedTask;
     }
 
     public bool IsTokenRevoked(string token)
     {
-        return _revokedTokens.Contains(token);
+        return RevokedTokens.ContainsKey(token);
     }
 
     private string GenerateJwtToken(User user)

@@ -7,14 +7,33 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using ModernizationPlatform.Application.DTOs;
+using ModernizationPlatform.Application.Interfaces;
+using ModernizationPlatform.Infra.Messaging.Connection;
 using ModernizationPlatform.Infra.Persistence;
+using RabbitMQ.Client;
 
 namespace ModernizationPlatform.API.IntegrationTests.Auth;
+
+public class FakeRabbitMqConnectionProvider : IRabbitMqConnectionProvider
+{
+    public IConnection GetConnection() => null!;
+}
+
+public class FakeJobPublisher : IJobPublisher
+{
+    public Task PublishJobAsync(AnalysisJobMessage message, CancellationToken cancellationToken) => Task.CompletedTask;
+}
+
+public class FakeResultConsumer : IResultConsumer
+{
+    public Task StartConsumingAsync(CancellationToken cancellationToken) => Task.CompletedTask;
+}
 
 public class AuthFlowIntegrationTests : IClassFixture<WebApplicationFactory<Program>>
 {
     private readonly WebApplicationFactory<Program> _factory;
     private readonly HttpClient _client;
+    private readonly string _databaseName = "TestDb_Auth_" + Guid.NewGuid();
 
     public AuthFlowIntegrationTests(WebApplicationFactory<Program> factory)
     {
@@ -33,8 +52,26 @@ public class AuthFlowIntegrationTests : IClassFixture<WebApplicationFactory<Prog
                 // Add in-memory database for testing
                 services.AddDbContext<AppDbContext>(options =>
                 {
-                    options.UseInMemoryDatabase("TestDb_" + Guid.NewGuid());
+                    options.UseInMemoryDatabase(_databaseName);
                 });
+
+                var hostedServices = services.Where(d => d.ServiceType == typeof(Microsoft.Extensions.Hosting.IHostedService)).ToList();
+                foreach (var service in hostedServices)
+                {
+                    services.Remove(service);
+                }
+
+                var rabbitMqConnection = services.SingleOrDefault(d => d.ServiceType == typeof(IRabbitMqConnectionProvider));
+                if (rabbitMqConnection != null) services.Remove(rabbitMqConnection);
+                services.AddSingleton<IRabbitMqConnectionProvider, FakeRabbitMqConnectionProvider>();
+
+                var jobPublisher = services.SingleOrDefault(d => d.ServiceType == typeof(IJobPublisher));
+                if (jobPublisher != null) services.Remove(jobPublisher);
+                services.AddSingleton<IJobPublisher, FakeJobPublisher>();
+
+                var resultConsumer = services.SingleOrDefault(d => d.ServiceType == typeof(IResultConsumer));
+                if (resultConsumer != null) services.Remove(resultConsumer);
+                services.AddSingleton<IResultConsumer, FakeResultConsumer>();
 
                 // Build the service provider and create the database
                 var sp = services.BuildServiceProvider();

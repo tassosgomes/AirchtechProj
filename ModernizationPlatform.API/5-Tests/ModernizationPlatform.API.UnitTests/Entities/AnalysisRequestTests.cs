@@ -40,6 +40,30 @@ public class AnalysisRequestTests
     }
 
     [Fact]
+    public void StartConsolidation_WhenStatusIsNotAnalysisRunning_ShouldThrow()
+    {
+        var request = new AnalysisRequest("https://example.com/repo", SourceProvider.GitHub, [AnalysisType.Security]);
+
+        var action = () => request.StartConsolidation();
+
+        action.Should().Throw<InvalidOperationException>();
+    }
+
+    [Fact]
+    public void Fail_WhenStatusIsCompleted_ShouldThrow()
+    {
+        var request = new AnalysisRequest("https://example.com/repo", SourceProvider.GitHub, [AnalysisType.Security]);
+        request.StartDiscovery();
+        request.StartAnalysis();
+        request.StartConsolidation();
+        request.Complete();
+
+        var action = () => request.Fail();
+
+        action.Should().Throw<InvalidOperationException>();
+    }
+
+    [Fact]
     public void IncrementRetry_ShouldIncreaseRetryCount()
     {
         var request = new AnalysisRequest("https://example.com/repo", SourceProvider.GitHub, [AnalysisType.Security]);

@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using ModernizationPlatform.Domain.Entities;
+using ModernizationPlatform.Domain.Enums;
 using ModernizationPlatform.Domain.Interfaces;
 using ModernizationPlatform.Infra.Persistence;
 
@@ -9,5 +11,25 @@ public sealed class AnalysisRequestRepository : Repository<AnalysisRequest>, IAn
     public AnalysisRequestRepository(AppDbContext context)
         : base(context)
     {
+    }
+
+    public async Task<IReadOnlyList<AnalysisRequest>> GetPagedAsync(int page, int size, CancellationToken cancellationToken)
+    {
+        return await DbSet.AsNoTracking()
+            .OrderByDescending(request => request.CreatedAt)
+            .Skip((page - 1) * size)
+            .Take(size)
+            .ToListAsync(cancellationToken);
+    }
+
+    public async Task<int> CountAsync(CancellationToken cancellationToken)
+    {
+        return await DbSet.AsNoTracking().CountAsync(cancellationToken);
+    }
+
+    public async Task<int> CountQueuedBeforeAsync(DateTime createdAt, CancellationToken cancellationToken)
+    {
+        return await DbSet.AsNoTracking()
+            .CountAsync(request => request.Status == RequestStatus.Queued && request.CreatedAt < createdAt, cancellationToken);
     }
 }

@@ -1,6 +1,8 @@
 using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +35,10 @@ public class FakeResultConsumer : IResultConsumer
 
 public class PromptCatalogIntegrationTests : IClassFixture<WebApplicationFactory<Program>>
 {
+    private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web)
+    {
+        Converters = { new JsonStringEnumConverter() }
+    };
     private readonly WebApplicationFactory<Program> _factory;
     private readonly string _databaseName = "TestDb_Prompts_" + Guid.NewGuid();
 
@@ -102,7 +108,7 @@ public class PromptCatalogIntegrationTests : IClassFixture<WebApplicationFactory
 
         var createResponse = await client.PostAsJsonAsync("/api/v1/prompts", createRequest);
         createResponse.StatusCode.Should().Be(HttpStatusCode.Created);
-        var createdPrompt = await createResponse.Content.ReadFromJsonAsync<PromptResponse>();
+        var createdPrompt = await createResponse.Content.ReadFromJsonAsync<PromptResponse>(JsonOptions);
         createdPrompt.Should().NotBeNull();
         createdPrompt!.AnalysisType.Should().Be(AnalysisType.Security);
         createdPrompt.Content.Should().Be(createRequest.Content);
@@ -111,7 +117,7 @@ public class PromptCatalogIntegrationTests : IClassFixture<WebApplicationFactory
         // 3. Get all prompts - should contain the created prompt
         var getAllResponse = await client.GetAsync("/api/v1/prompts");
         getAllResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        var allPrompts = await getAllResponse.Content.ReadFromJsonAsync<List<PromptResponse>>();
+        var allPrompts = await getAllResponse.Content.ReadFromJsonAsync<List<PromptResponse>>(JsonOptions);
         allPrompts.Should().NotBeNull();
         allPrompts.Should().HaveCount(1);
         allPrompts![0].Id.Should().Be(createdPrompt.Id);
@@ -119,7 +125,7 @@ public class PromptCatalogIntegrationTests : IClassFixture<WebApplicationFactory
         // 4. Get prompt by ID
         var getByIdResponse = await client.GetAsync($"/api/v1/prompts/{createdPrompt.Id}");
         getByIdResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        var retrievedPrompt = await getByIdResponse.Content.ReadFromJsonAsync<PromptResponse>();
+        var retrievedPrompt = await getByIdResponse.Content.ReadFromJsonAsync<PromptResponse>(JsonOptions);
         retrievedPrompt.Should().NotBeNull();
         retrievedPrompt!.Id.Should().Be(createdPrompt.Id);
 
@@ -135,7 +141,7 @@ public class PromptCatalogIntegrationTests : IClassFixture<WebApplicationFactory
             throw new InvalidOperationException($"Update failed with status {updateResponse.StatusCode}: {errorContent}");
         }
         updateResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-        var updatedPrompt = await updateResponse.Content.ReadFromJsonAsync<PromptResponse>();
+        var updatedPrompt = await updateResponse.Content.ReadFromJsonAsync<PromptResponse>(JsonOptions);
         updatedPrompt.Should().NotBeNull();
         updatedPrompt!.Content.Should().Be(updateRequest.Content);
         updatedPrompt.UpdatedAt.Should().BeAfter(createdPrompt.UpdatedAt);
@@ -152,7 +158,7 @@ public class PromptCatalogIntegrationTests : IClassFixture<WebApplicationFactory
         // 7. Get all prompts - should now have 2 prompts
         var getAllResponse2 = await client.GetAsync("/api/v1/prompts");
         getAllResponse2.StatusCode.Should().Be(HttpStatusCode.OK);
-        var allPrompts2 = await getAllResponse2.Content.ReadFromJsonAsync<List<PromptResponse>>();
+        var allPrompts2 = await getAllResponse2.Content.ReadFromJsonAsync<List<PromptResponse>>(JsonOptions);
         allPrompts2.Should().NotBeNull();
         allPrompts2.Should().HaveCount(2);
     }
@@ -254,7 +260,7 @@ public class PromptCatalogIntegrationTests : IClassFixture<WebApplicationFactory
             throw new InvalidOperationException($"Login failed with status {loginResponse.StatusCode}: {errorContent}");
         }
         
-        var loginResult = await loginResponse.Content.ReadFromJsonAsync<LoginResponse>();
+        var loginResult = await loginResponse.Content.ReadFromJsonAsync<LoginResponse>(JsonOptions);
         return loginResult!.Token;
     }
 }

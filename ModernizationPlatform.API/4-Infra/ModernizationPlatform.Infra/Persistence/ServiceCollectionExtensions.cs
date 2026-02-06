@@ -23,6 +23,7 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped<IAnalysisRequestRepository, AnalysisRequestRepository>();
+        services.AddScoped<IAnalysisJobRepository, AnalysisJobRepository>();
         services.AddScoped<IPromptRepository, PromptRepository>();
         services.AddScoped<IFindingRepository, FindingRepository>();
         services.AddScoped<IInventoryRepository, InventoryRepository>();

@@ -1,5 +1,5 @@
 ---
-status: pending
+status: completed
 parallelizable: true
 blocked_by: ["2.0", "3.0", "4.0"]
 ---
@@ -31,17 +31,17 @@ Implementar os endpoints REST para criação e consulta de solicitações de an�
 
 ## Subtarefas
 
-- [ ] 6.1 Criar command `CreateAnalysisCommand` (repositoryUrl, provider, accessToken, selectedTypes)
-- [ ] 6.2 Criar `ICommandHandler<CreateAnalysisCommand, AnalysisRequest>` com validação e persistência
-- [ ] 6.3 Implementar validação com FluentValidation: URL HTTPS válida, provider válido, pelo menos 1 tipo selecionado
-- [ ] 6.4 Criar `AnalysisRequestsController` com endpoints: `POST /api/v1/analysis-requests`, `GET /api/v1/analysis-requests`, `GET /api/v1/analysis-requests/{id}`, `GET /api/v1/analysis-requests/{id}/results`
-- [ ] 6.5 Implementar paginação na listagem (`_page`, `_size`) conforme `rules/restful.md`
-- [ ] 6.6 Implementar cálculo de posição na fila (contagem de requests com status QUEUED criadas antes)
-- [ ] 6.7 Criar DTOs: `CreateAnalysisRequest`, `AnalysisRequestResponse` (com posição na fila), `AnalysisRequestListResponse`
-- [ ] 6.8 Garantir que `accessToken` não é persistido — mantido apenas em memória durante a criação do job
-- [ ] 6.9 Aplicar `[Authorize]` em todos os endpoints
-- [ ] 6.10 Escrever testes unitários: validação de URL, transições de estado, cálculo de posição na fila
-- [ ] 6.11 Escrever teste de integração: criar solicitação → consultar status → verificar posição na fila
+- [x] 6.1 Criar command `CreateAnalysisCommand` (repositoryUrl, provider, accessToken, selectedTypes)
+- [x] 6.2 Criar `ICommandHandler<CreateAnalysisCommand, AnalysisRequest>` com validação e persistência
+- [x] 6.3 Implementar validação com FluentValidation: URL HTTPS válida, provider válido, pelo menos 1 tipo selecionado
+- [x] 6.4 Criar `AnalysisRequestsController` com endpoints: `POST /api/v1/analysis-requests`, `GET /api/v1/analysis-requests`, `GET /api/v1/analysis-requests/{id}`, `GET /api/v1/analysis-requests/{id}/results`
+- [x] 6.5 Implementar paginação na listagem (`_page`, `_size`) conforme `rules/restful.md`
+- [x] 6.6 Implementar cálculo de posição na fila (contagem de requests com status QUEUED criadas antes)
+- [x] 6.7 Criar DTOs: `CreateAnalysisRequest`, `AnalysisRequestResponse` (com posição na fila), `AnalysisRequestListResponse`
+- [x] 6.8 Garantir que `accessToken` não é persistido — mantido apenas em memória durante a criação do job
+- [x] 6.9 Aplicar `[Authorize]` em todos os endpoints
+- [x] 6.10 Escrever testes unitários: validação de URL, transições de estado, cálculo de posição na fila
+- [x] 6.11 Escrever teste de integração: criar solicitação → consultar status → verificar posição na fila
 
 ## Sequenciamento
 
@@ -100,11 +100,20 @@ Implementar os endpoints REST para criação e consulta de solicitações de an�
 
 ## Critérios de Sucesso
 
-- [ ] Criação de solicitação persiste no banco com status QUEUED
-- [ ] Validação rejeita URLs inválidas com Problem Details
-- [ ] `accessToken` NÃO aparece em nenhuma coluna do banco
-- [ ] Listagem com paginação funciona corretamente
-- [ ] Posição na fila é calculada corretamente
-- [ ] Endpoints protegidos por JWT
-- [ ] Mínimo 6 testes unitários passando
-- [ ] Teste de integração do fluxo completo passando
+- [x] Criação de solicitação persiste no banco com status QUEUED
+- [x] Validação rejeita URLs inválidas com Problem Details
+- [x] `accessToken` NÃO aparece em nenhuma coluna do banco
+- [x] Listagem com paginação funciona corretamente
+- [x] Posição na fila é calculada corretamente
+- [x] Endpoints protegidos por JWT
+- [x] Mínimo 6 testes unitários passando
+- [x] Teste de integração do fluxo completo passando
+
+## Checklist de Conclusão
+
+- [x] 6.0 API de Solicitação de Análise ✅ CONCLUÍDA
+  - [x] 6.1 Implementação completada
+  - [x] 6.2 Definição da tarefa, PRD e tech spec validados
+  - [x] 6.3 Análise de regras e conformidade verificadas
+  - [x] 6.4 Revisão de código completada
+  - [x] 6.5 Pronto para deploy
