@@ -75,6 +75,7 @@ builder.Services.AddSingleton<OrchestrationStateStore>();
 builder.Services.AddSingleton<IOrchestrationService, OrchestrationService>();
 builder.Services.AddScoped<IConsolidationService, ConsolidationService>();
 builder.Services.AddScoped<IConsolidatedResultService, ConsolidatedResultService>();
+builder.Services.AddScoped<IInventoryService, InventoryService>();
 builder.Services.AddHostedService<OrchestrationBackgroundService>();
 
 // Discovery Services

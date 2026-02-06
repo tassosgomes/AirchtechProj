@@ -11,17 +11,20 @@ public sealed class ConsolidationService : IConsolidationService
     private readonly IAnalysisJobRepository _jobRepository;
     private readonly IFindingRepository _findingRepository;
     private readonly IAnalysisRequestRepository _requestRepository;
+    private readonly IInventoryRepository _inventoryRepository;
     private readonly IUnitOfWork _unitOfWork;
 
     public ConsolidationService(
         IAnalysisJobRepository jobRepository,
         IFindingRepository findingRepository,
         IAnalysisRequestRepository requestRepository,
+        IInventoryRepository inventoryRepository,
         IUnitOfWork unitOfWork)
     {
         _jobRepository = jobRepository;
         _findingRepository = findingRepository;
         _requestRepository = requestRepository;
+        _inventoryRepository = inventoryRepository;
         _unitOfWork = unitOfWork;
     }
 
@@ -70,6 +73,8 @@ public sealed class ConsolidationService : IConsolidationService
         {
             request.Complete();
         }
+
+        await UpsertRepositoryAsync(request, cancellationToken);
 
         // 7. Salvar mudanças
         await _unitOfWork.SaveChangesAsync(cancellationToken);
@@ -250,5 +255,42 @@ public sealed class ConsolidationService : IConsolidationService
         }
 
         return null;
+    }
+
+    private async Task UpsertRepositoryAsync(AnalysisRequest request, CancellationToken cancellationToken)
+    {
+        var existing = await _inventoryRepository.GetByUrlAsync(request.RepositoryUrl, cancellationToken);
+
+        if (existing == null)
+        {
+            var name = GetRepositoryNameFromUrl(request.RepositoryUrl);
+            var repository = new Repository(request.RepositoryUrl, name, request.Provider);
+            repository.MarkAnalyzed(request.CompletedAt ?? DateTime.UtcNow);
+            await _inventoryRepository.AddAsync(repository, cancellationToken);
+            return;
+        }
+
+        existing.MarkAnalyzed(request.CompletedAt ?? DateTime.UtcNow);
+        _inventoryRepository.Update(existing);
+    }
+
+    private static string GetRepositoryNameFromUrl(string repositoryUrl)
+    {
+        if (string.IsNullOrWhiteSpace(repositoryUrl))
+        {
+            return "unknown";
+        }
+
+        if (Uri.TryCreate(repositoryUrl, UriKind.Absolute, out var uri))
+        {
+            var segment = uri.Segments.LastOrDefault()?.Trim('/');
+            return string.IsNullOrWhiteSpace(segment)
+                ? "unknown"
+                : segment.EndsWith(".git", StringComparison.OrdinalIgnoreCase)
+                    ? segment[..^4]
+                    : segment;
+        }
+
+        return repositoryUrl;
     }
 }

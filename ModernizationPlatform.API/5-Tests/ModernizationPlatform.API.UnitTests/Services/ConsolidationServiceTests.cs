@@ -29,6 +29,7 @@ public sealed class ConsolidationServiceTests
         services.AddScoped<IAnalysisRequestRepository, AnalysisRequestRepository>();
         services.AddScoped<IAnalysisJobRepository, AnalysisJobRepository>();
         services.AddScoped<IFindingRepository, FindingRepository>();
+        services.AddScoped<IInventoryRepository, InventoryRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<ConsolidationService>();
 
@@ -119,6 +120,48 @@ public sealed class ConsolidationServiceTests
         findings.Should().HaveCount(2);
         findings.Should().Contain(f => f.Severity == Severity.High && f.Category == "Obsolescence");
         findings.Should().Contain(f => f.Severity == Severity.Medium && f.Category == "Security");
+    }
+
+    [Fact]
+    public async Task ConsolidateAsync_WithCompletedRequest_UpsertsRepositoryInventory()
+    {
+        // Arrange
+        var dbName = "Test_" + Guid.NewGuid();
+        var provider = BuildProvider(dbName);
+        await using var scope = provider.CreateAsyncScope();
+
+        var requestRepo = scope.ServiceProvider.GetRequiredService<IAnalysisRequestRepository>();
+        var jobRepo = scope.ServiceProvider.GetRequiredService<IAnalysisJobRepository>();
+        var inventoryRepo = scope.ServiceProvider.GetRequiredService<IInventoryRepository>();
+        var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+        var sut = scope.ServiceProvider.GetRequiredService<ConsolidationService>();
+
+        var request = new AnalysisRequest("https://github.com/test/inventory-repo", SourceProvider.GitHub, [AnalysisType.Security]);
+        request.StartDiscovery();
+        request.StartAnalysis();
+        request.StartConsolidation();
+        await requestRepo.AddAsync(request, CancellationToken.None);
+        await unitOfWork.SaveChangesAsync(CancellationToken.None);
+
+        var job = new AnalysisJob(request.Id, AnalysisType.Security);
+        job.Start();
+        job.Complete(JsonSerializer.Serialize(new
+        {
+            findings = new[]
+            {
+                new { severity = "High", category = "Security", title = "CVE", description = "Issue", filePath = "file.cs" }
+            }
+        }), TimeSpan.FromSeconds(5));
+        await jobRepo.AddAsync(job, CancellationToken.None);
+        await unitOfWork.SaveChangesAsync(CancellationToken.None);
+
+        // Act
+        await sut.ConsolidateAsync(request.Id, CancellationToken.None);
+
+        // Assert
+        var repository = await inventoryRepo.GetByUrlAsync(request.RepositoryUrl, CancellationToken.None);
+        repository.Should().NotBeNull();
+        repository!.LastAnalysisAt.Should().NotBeNull();
     }
 
     [Fact]
