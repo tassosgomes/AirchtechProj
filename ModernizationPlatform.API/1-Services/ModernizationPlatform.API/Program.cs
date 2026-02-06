@@ -73,7 +73,8 @@ builder.Services.AddScoped<IPromptCatalogService, PromptCatalogService>();
 builder.Services.AddScoped<ICommandHandler<CreateAnalysisCommand, AnalysisRequest>, CreateAnalysisCommandHandler>();
 builder.Services.AddSingleton<OrchestrationStateStore>();
 builder.Services.AddSingleton<IOrchestrationService, OrchestrationService>();
-builder.Services.AddScoped<IConsolidationService, NoOpConsolidationService>();
+builder.Services.AddScoped<IConsolidationService, ConsolidationService>();
+builder.Services.AddScoped<IConsolidatedResultService, ConsolidatedResultService>();
 builder.Services.AddHostedService<OrchestrationBackgroundService>();
 
 // Discovery Services

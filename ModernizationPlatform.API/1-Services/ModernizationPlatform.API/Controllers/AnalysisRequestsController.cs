@@ -19,15 +19,18 @@ public sealed class AnalysisRequestsController : ControllerBase
     private readonly IOrchestrationService _orchestrationService;
     private readonly IAnalysisRequestRepository _analysisRequestRepository;
     private readonly IAnalysisJobRepository _analysisJobRepository;
+    private readonly IConsolidatedResultService _consolidatedResultService;
 
     public AnalysisRequestsController(
         IOrchestrationService orchestrationService,
         IAnalysisRequestRepository analysisRequestRepository,
-        IAnalysisJobRepository analysisJobRepository)
+        IAnalysisJobRepository analysisJobRepository,
+        IConsolidatedResultService consolidatedResultService)
     {
         _orchestrationService = orchestrationService;
         _analysisRequestRepository = analysisRequestRepository;
         _analysisJobRepository = analysisJobRepository;
+        _consolidatedResultService = consolidatedResultService;
     }
 
     [HttpPost]
@@ -134,6 +137,24 @@ public sealed class AnalysisRequestsController : ControllerBase
 
         var response = new AnalysisRequestResultsResponse(id, request.Status, jobResponses);
         return Ok(response);
+    }
+
+    [HttpGet("{id:guid}/consolidated")]
+    [ProducesResponseType(typeof(ConsolidatedResultDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<ConsolidatedResultDto>> GetConsolidatedResults(Guid id, CancellationToken cancellationToken)
+    {
+        var result = await _consolidatedResultService.GetConsolidatedResultAsync(id, cancellationToken);
+        if (result == null)
+        {
+            return Problem(
+                statusCode: StatusCodes.Status404NotFound,
+                title: "Analysis request not found",
+                detail: $"Analysis request with ID '{id}' does not exist.");
+        }
+
+        return Ok(result);
     }
 
     private async Task<int?> GetQueuePositionAsync(AnalysisRequest request, CancellationToken cancellationToken)

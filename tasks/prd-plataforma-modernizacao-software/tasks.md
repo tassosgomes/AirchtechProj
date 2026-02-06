@@ -24,7 +24,7 @@ Este documento consolida todas as tarefas necessárias para implementar a **Plat
 - [x] 9.0 Orquestração do Pipeline
 
 ### Fase 3 – Consolidação e Inventário (Semanas 7–8)
-- [ ] 10.0 Motor de Consolidação
+- [x] 10.0 Motor de Consolidação
 - [ ] 11.0 Inventário de Software
 
 ### Fase 4 – Frontend (Semanas 9–11)
