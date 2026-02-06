@@ -67,6 +67,14 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IPromptCatalogService, PromptCatalogService>();
 builder.Services.AddScoped<ICommandHandler<CreateAnalysisCommand, AnalysisRequest>, CreateAnalysisCommandHandler>();
 
+// Discovery Services
+builder.Services.AddScoped<IDiscoveryService, ModernizationPlatform.Infra.Discovery.DiscoveryService>();
+builder.Services.AddScoped<ModernizationPlatform.Domain.Services.IGitCloneService, ModernizationPlatform.Infra.Discovery.GitCloneService>();
+builder.Services.AddScoped<ModernizationPlatform.Domain.Services.ILanguageDetectorService, ModernizationPlatform.Infra.Discovery.LanguageDetectorService>();
+builder.Services.AddScoped<ModernizationPlatform.Domain.Services.IDotNetProjectAnalyzer, ModernizationPlatform.Infra.Discovery.DotNetProjectAnalyzer>();
+builder.Services.AddScoped<ModernizationPlatform.Domain.Services.IDependencyAnalyzer, ModernizationPlatform.Infra.Discovery.DependencyAnalyzer>();
+builder.Services.AddScoped<ModernizationPlatform.Domain.Services.IDirectoryStructureMapper, ModernizationPlatform.Infra.Discovery.DirectoryStructureMapper>();
+
 // Validators
 builder.Services.AddScoped<IValidator<RegisterRequest>, RegisterRequestValidator>();
 builder.Services.AddScoped<IValidator<LoginRequest>, LoginRequestValidator>();
