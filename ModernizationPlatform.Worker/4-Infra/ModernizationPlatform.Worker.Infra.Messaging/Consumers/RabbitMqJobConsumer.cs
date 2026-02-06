@@ -19,6 +19,7 @@ public sealed class RabbitMqJobConsumer : BackgroundService, IJobConsumer
     private readonly ILogger<RabbitMqJobConsumer> _logger;
     private readonly RabbitMqOptions _options;
     private IModel? _channel;
+    private CancellationToken _stoppingToken;
 
     public RabbitMqJobConsumer(
         IRabbitMqConnectionProvider connectionProvider,
@@ -39,6 +40,7 @@ public sealed class RabbitMqJobConsumer : BackgroundService, IJobConsumer
 
     protected override Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        _stoppingToken = stoppingToken;
         var connection = _connectionProvider.GetConnection();
         _channel = connection.CreateModel();
         _channel.BasicQos(0, _options.PrefetchCount, false);
@@ -71,7 +73,7 @@ public sealed class RabbitMqJobConsumer : BackgroundService, IJobConsumer
                 return;
             }
 
-            await _handler.HandleAsync(message, CancellationToken.None);
+            await _handler.HandleAsync(message, _stoppingToken);
             _channel.BasicAck(args.DeliveryTag, false);
         }
         catch (Exception ex)

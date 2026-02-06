@@ -10,6 +10,10 @@
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.2" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.0" />
+    <PackageReference Include="Testcontainers" Version="3.10.0" />
+    <PackageReference Include="Testcontainers.RabbitMq" Version="3.10.0" />
     <PackageReference Include="xunit" Version="2.9.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
   </ItemGroup>
@@ -22,6 +26,7 @@
     <ProjectReference Include="..\..\2-Application\ModernizationPlatform.Worker.Application\ModernizationPlatform.Worker.Application.csproj" />
     <ProjectReference Include="..\..\4-Infra\ModernizationPlatform.Worker.Infra.Messaging\ModernizationPlatform.Worker.Infra.Messaging.csproj" />
     <ProjectReference Include="..\..\4-Infra\ModernizationPlatform.Worker.Infra.CopilotSdk\ModernizationPlatform.Worker.Infra.CopilotSdk.csproj" />
+    <ProjectReference Include="..\..\1-Services\ModernizationPlatform.Worker\ModernizationPlatform.Worker.csproj" />
   </ItemGroup>
 
 </Project>

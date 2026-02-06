@@ -1,5 +1,5 @@
 ---
-status: pending
+status: completed
 parallelizable: true
 blocked_by: ["3.0"]
 ---
@@ -32,19 +32,19 @@ Implementar o Worker Genérico, um processo stateless em container Docker que co
 
 ## Subtarefas
 
-- [ ] 8.1 Implementar `IAnalysisExecutor` na camada Application do Worker: `ExecuteAsync(AnalysisInput, CancellationToken)`
-- [ ] 8.2 Criar `AnalysisInput` DTO: repositoryUrl, provider, accessToken, sharedContext, promptContent, analysisType, timeoutSeconds
-- [ ] 8.3 Criar `AnalysisOutput` DTO: findings (lista), metadata, executionDurationMs
-- [ ] 8.4 Implementar `ICopilotClient` na camada Infra (CopilotSdk): enviar código + prompt + contexto ao SDK, receber resposta
-- [ ] 8.5 Implementar `CopilotClient`: configuração do SDK, montagem do request (código + contexto + prompt), chamada ao SDK, tratamento de timeout
-- [ ] 8.6 Implementar parsing de output do Copilot SDK: extrair JSON estruturado da resposta textual, validar schema
-- [ ] 8.7 Implementar `AnalysisExecutor`: clonar repo (reutilizar lógica), enviar para Copilot SDK, parsear resultado, gerar output JSON
-- [ ] 8.8 Integrar consumer RabbitMQ (da tarefa 3.0) com `AnalysisExecutor`: receber `AnalysisJobMessage` → executar → publicar `AnalysisResultMessage`
-- [ ] 8.9 Implementar timeout configurável por tipo de análise (default: 30 min)
-- [ ] 8.10 Implementar lógica de status: publicar RUNNING ao iniciar, COMPLETED ou FAILED ao finalizar
-- [ ] 8.11 Garantir que `accessToken` é mantido em memória (variável scoped) e nunca logado
-- [ ] 8.12 Escrever testes unitários: parsing de output, lógica de timeout, tratamento de erro do SDK
-- [ ] 8.13 Escrever teste de integração: mock do Copilot SDK + RabbitMQ real (Testcontainers)
+- [x] 8.1 Implementar `IAnalysisExecutor` na camada Application do Worker: `ExecuteAsync(AnalysisInput, CancellationToken)`
+- [x] 8.2 Criar `AnalysisInput` DTO: repositoryUrl, provider, accessToken, sharedContext, promptContent, analysisType, timeoutSeconds
+- [x] 8.3 Criar `AnalysisOutput` DTO: findings (lista), metadata, executionDurationMs
+- [x] 8.4 Implementar `ICopilotClient` na camada Infra (CopilotSdk): enviar código + prompt + contexto ao SDK, receber resposta
+- [x] 8.5 Implementar `CopilotClient`: configuração do SDK, montagem do request (código + contexto + prompt), chamada ao SDK, tratamento de timeout
+- [x] 8.6 Implementar parsing de output do Copilot SDK: extrair JSON estruturado da resposta textual, validar schema
+- [x] 8.7 Implementar `AnalysisExecutor`: clonar repo (reutilizar lógica), enviar para Copilot SDK, parsear resultado, gerar output JSON
+- [x] 8.8 Integrar consumer RabbitMQ (da tarefa 3.0) com `AnalysisExecutor`: receber `AnalysisJobMessage` → executar → publicar `AnalysisResultMessage`
+- [x] 8.9 Implementar timeout configurável por tipo de análise (default: 30 min)
+- [x] 8.10 Implementar lógica de status: publicar RUNNING ao iniciar, COMPLETED ou FAILED ao finalizar
+- [x] 8.11 Garantir que `accessToken` é mantido em memória (variável scoped) e nunca logado
+- [x] 8.12 Escrever testes unitários: parsing de output, lógica de timeout, tratamento de erro do SDK
+- [x] 8.13 Escrever teste de integração: mock do Copilot SDK + RabbitMQ real (Testcontainers)
 
 ## Sequenciamento
 
@@ -116,11 +116,11 @@ public interface ICopilotClient
 
 ## Critérios de Sucesso
 
-- [ ] Worker consome mensagem da fila e executa análise
-- [ ] Output JSON estruturado gerado corretamente
-- [ ] Timeout é respeitado (cancellation após limite)
-- [ ] Status RUNNING/COMPLETED/FAILED publicado corretamente
-- [ ] `accessToken` nunca aparece em logs
-- [ ] Worker funciona como container Docker isolado
-- [ ] Mínimo 5 testes unitários passando (parsing, timeout, erros)
-- [ ] Teste de integração com mock do SDK passando
+- [x] Worker consome mensagem da fila e executa análise
+- [x] Output JSON estruturado gerado corretamente
+- [x] Timeout é respeitado (cancellation após limite)
+- [x] Status RUNNING/COMPLETED/FAILED publicado corretamente
+- [x] `accessToken` nunca aparece em logs
+- [x] Worker funciona como container Docker isolado
+- [x] Mínimo 5 testes unitários passando (parsing, timeout, erros)
+- [x] Teste de integração com mock do SDK passando
