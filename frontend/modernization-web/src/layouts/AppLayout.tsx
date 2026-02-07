@@ -1,4 +1,4 @@
-import { Activity, Database, Layers, LogOut, Radar, Terminal } from 'lucide-react';
+import { Activity, Database, LogOut, Radar, Terminal } from 'lucide-react';
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '../components/Button';
 import { useAuth } from '../hooks/useAuth';
@@ -7,7 +7,6 @@ const navItems = [
   { to: '/dashboard', label: 'Dashboard', icon: <Activity size={18} /> },
   { to: '/requests/new', label: 'Nova Solicitação', icon: <Radar size={18} /> },
   { to: '/inventory', label: 'Inventário', icon: <Database size={18} /> },
-  { to: '/inventory/1/timeline', label: 'Timeline', icon: <Layers size={18} /> },
 ];
 
 export function AppLayout() {

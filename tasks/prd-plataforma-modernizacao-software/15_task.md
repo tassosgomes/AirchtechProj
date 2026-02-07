@@ -1,7 +1,7 @@
 ---
-status: pending
+status: completed
 parallelizable: false
-blocked_by: ["12.0", "14.0", "11.0"]
+blocked_by: []
 ---
 
 <task_context>
@@ -13,7 +13,14 @@ blocked_by: ["12.0", "14.0", "11.0"]
 <unblocks>"16.0"</unblocks>
 </task_context>
 
-# Tarefa 15.0: Tela de Inventário e Histórico
+# Tarefa 15.0: Tela de Inventário e Histórico ✅ CONCLUÍDA
+
+- [x] 15.0 Tela de Inventario e Historico ✅ CONCLUIDA
+  - [x] 15.1 Implementacao completada
+  - [x] 15.2 Definicao da tarefa, PRD e tech spec validados
+  - [x] 15.3 Analise de regras e conformidade verificadas
+  - [x] 15.4 Revisao de codigo completada
+  - [x] 15.5 Pronto para deploy
 
 ## Visão Geral
 
@@ -29,15 +36,15 @@ Implementar as telas de inventário de software e histórico/evolução temporal
 
 ## Subtarefas
 
-- [ ] 15.1 Implementar página de Inventário (`/inventory`): lista de repositórios analisados com resumo de tecnologias e achados
-- [ ] 15.2 Implementar card de repositório: URL, provedor, linguagens (badges), total de findings por severidade, data da última análise
-- [ ] 15.3 Implementar filtros: campo de busca por texto, filtro por tecnologia (dropdown), filtro por severidade (multi-select), filtro por data (date range)
-- [ ] 15.4 Implementar paginação na listagem
-- [ ] 15.5 Integrar com API: `GET /api/v1/inventory/repositories` com parâmetros de filtro e paginação
-- [ ] 15.6 Implementar página de Timeline (`/inventory/:id/timeline`): evolução temporal de findings por repositório
-- [ ] 15.7 Implementar visualização de timeline: gráfico de linhas ou barras mostrando contagem de findings por severidade ao longo do tempo
-- [ ] 15.8 Integrar com API: `GET /api/v1/inventory/repositories/{id}/timeline`
-- [ ] 15.9 Implementar navegação: do card do repositório → timeline; da timeline → detalhes de uma análise específica
+- [x] 15.1 Implementar página de Inventário (`/inventory`): lista de repositórios analisados com resumo de tecnologias e achados
+- [x] 15.2 Implementar card de repositório: URL, provedor, linguagens (badges), total de findings por severidade, data da última análise
+- [x] 15.3 Implementar filtros: campo de busca por texto, filtro por tecnologia (dropdown), filtro por severidade (multi-select), filtro por data (date range)
+- [x] 15.4 Implementar paginação na listagem
+- [x] 15.5 Integrar com API: `GET /api/v1/inventory/repositories` com parâmetros de filtro e paginação
+- [x] 15.6 Implementar página de Timeline (`/inventory/:id/timeline`): evolução temporal de findings por repositório
+- [x] 15.7 Implementar visualização de timeline: gráfico de linhas ou barras mostrando contagem de findings por severidade ao longo do tempo
+- [x] 15.8 Integrar com API: `GET /api/v1/inventory/repositories/{id}/timeline`
+- [x] 15.9 Implementar navegação: do card do repositório → timeline; da timeline → detalhes de uma análise específica
 
 ## Sequenciamento
 
@@ -108,9 +115,9 @@ const response = await apiClient.get(`/api/v1/inventory/repositories/${id}/timel
 
 ## Critérios de Sucesso
 
-- [ ] Inventário lista repositórios com resumo de tecnologias e achados
-- [ ] Filtros funcionam corretamente (tecnologia, severidade, data)
-- [ ] Paginação funciona na listagem
-- [ ] Timeline exibe evolução temporal de findings
-- [ ] Navegação entre inventário → timeline → detalhes funciona
-- [ ] Estética Cyber-Technical consistente
+- [x] Inventário lista repositórios com resumo de tecnologias e achados
+- [x] Filtros funcionam corretamente (tecnologia, severidade, data)
+- [x] Paginação funciona na listagem
+- [x] Timeline exibe evolução temporal de findings
+- [x] Navegação entre inventário → timeline → detalhes funciona
+- [x] Estética Cyber-Technical consistente

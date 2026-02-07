@@ -31,7 +31,7 @@ Este documento consolida todas as tarefas necessárias para implementar a **Plat
 - [x] 12.0 Setup Frontend React/Vite + Tema Cyber-Technical
 - [x] 13.0 Telas de Autenticação e Solicitação
 - [x] 14.0 Dashboard e Visualização de Resultados
-- [ ] 15.0 Tela de Inventário e Histórico
+- [x] 15.0 Tela de Inventário e Histórico
 
 ### Fase 5 – Observabilidade e Hardening (Semana 12)
 - [ ] 16.0 Observabilidade com Sentry
