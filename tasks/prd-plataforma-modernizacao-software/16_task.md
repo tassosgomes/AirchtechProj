@@ -1,5 +1,5 @@
 ---
-status: pending
+status: completed
 parallelizable: true
 blocked_by: ["9.0", "12.0"]
 ---
@@ -13,7 +13,14 @@ blocked_by: ["9.0", "12.0"]
 <unblocks>"17.0"</unblocks>
 </task_context>
 
-# Tarefa 16.0: Observabilidade com Sentry
+# Tarefa 16.0: Observabilidade com Sentry ✅ CONCLUÍDA
+
+- [x] 16.0 Observabilidade com Sentry ✅ CONCLUÍDA
+  - [x] 16.1 Implementação completada
+  - [x] 16.2 Definição da tarefa, PRD e tech spec validados
+  - [x] 16.3 Análise de regras e conformidade verificadas
+  - [x] 16.4 Revisão de código completada
+  - [x] 16.5 Pronto para deploy
 
 ## Visão Geral
 
@@ -31,19 +38,19 @@ Integrar o Sentry como plataforma de observabilidade em todos os componentes: AP
 
 ## Subtarefas
 
-- [ ] 16.1 Instalar `Sentry.AspNetCore` e `Sentry.Extensions.Logging` na API e no Worker
-- [ ] 16.2 Configurar Sentry no `Program.cs` da API: DSN via variável de ambiente, environment, release, traces sample rate
-- [ ] 16.3 Configurar Sentry no `Program.cs` do Worker: DSN via variável de ambiente, environment, release
-- [ ] 16.4 Implementar middleware de tracing: propagar `requestId` como tag em todas as transactions
-- [ ] 16.5 Configurar logs estruturados (JSON): Serilog com sink para console (JSON format) + integração Sentry
-- [ ] 16.6 Implementar campos obrigatórios nos logs: timestamp, level, message, service.name, trace_id, requestId
-- [ ] 16.7 Registrar métricas por job: log estruturado com duração, status final, tipo de análise em cada conclusão de job
-- [ ] 16.8 Configurar bridge OpenTelemetry no Sentry SDK para correlação de traces
-- [ ] 16.9 Instalar `@sentry/react` no Frontend
-- [ ] 16.10 Configurar Sentry no Frontend: DSN, environment, error boundary, performance monitoring
-- [ ] 16.11 Propagar `requestId` do backend nos headers de resposta para o frontend
-- [ ] 16.12 Verificar que `accessToken` NÃO aparece em nenhum log ou evento do Sentry (scrubbing)
-- [ ] 16.13 Escrever testes: verificar que logs são emitidos nos formatos corretos, que tags são propagadas
+- [x] 16.1 Instalar `Sentry.AspNetCore` e `Sentry.Extensions.Logging` na API e no Worker
+- [x] 16.2 Configurar Sentry no `Program.cs` da API: DSN via variável de ambiente, environment, release, traces sample rate
+- [x] 16.3 Configurar Sentry no `Program.cs` do Worker: DSN via variável de ambiente, environment, release
+- [x] 16.4 Implementar middleware de tracing: propagar `requestId` como tag em todas as transactions
+- [x] 16.5 Configurar logs estruturados (JSON): Serilog com sink para console (JSON format) + integração Sentry
+- [x] 16.6 Implementar campos obrigatórios nos logs: timestamp, level, message, service.name, trace_id, requestId
+- [x] 16.7 Registrar métricas por job: log estruturado com duração, status final, tipo de análise em cada conclusão de job
+- [x] 16.8 Configurar bridge OpenTelemetry no Sentry SDK para correlação de traces
+- [x] 16.9 Instalar `@sentry/react` no Frontend
+- [x] 16.10 Configurar Sentry no Frontend: DSN, environment, error boundary, performance monitoring
+- [x] 16.11 Propagar `requestId` do backend nos headers de resposta para o frontend
+- [x] 16.12 Verificar que `accessToken` NÃO aparece em nenhum log ou evento do Sentry (scrubbing)
+- [x] 16.13 Escrever testes: verificar que logs são emitidos nos formatos corretos, que tags são propagadas
 
 ## Sequenciamento
 

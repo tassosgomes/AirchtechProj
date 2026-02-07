@@ -3,7 +3,10 @@ using System.Text.Json.Serialization;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Logging;
 using ModernizationPlatform.API.BackgroundServices;
+using ModernizationPlatform.API.Logging;
+using ModernizationPlatform.API.Middleware;
 using ModernizationPlatform.Application.Commands;
 using ModernizationPlatform.Application.Configuration;
 using ModernizationPlatform.Application.DTOs;
@@ -14,8 +17,42 @@ using ModernizationPlatform.Application.Validators;
 using ModernizationPlatform.Domain.Entities;
 using ModernizationPlatform.Infra.Messaging;
 using ModernizationPlatform.Infra.Persistence;
+using OpenTelemetry.Trace;
+using Sentry;
+using Sentry.OpenTelemetry;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var serviceName = builder.Configuration["ServiceName"] ?? "modernization-api";
+var serviceVersion = builder.Configuration["ServiceVersion"]
+    ?? typeof(Program).Assembly.GetName().Version?.ToString()
+    ?? "unknown";
+var sentryDsn = builder.Configuration["Sentry:Dsn"] ?? builder.Configuration["SENTRY_DSN"];
+var sentryRelease = builder.Configuration["Sentry:Release"] ?? builder.Configuration["SENTRY_RELEASE"];
+var sentryTracesSampleRate = ResolveSampleRate(builder.Configuration["Sentry:TracesSampleRate"], 1.0);
+var sentryEnabled = !string.IsNullOrWhiteSpace(sentryDsn);
+
+builder.Logging.ClearProviders();
+builder.Host.UseSerilog((context, services, configuration) =>
+{
+    configuration
+        .Enrich.FromLogContext()
+        .WriteTo.Console(new StructuredJsonFormatter(serviceName, serviceVersion));
+});
+
+if (sentryEnabled)
+{
+    builder.WebHost.UseSentry(options =>
+        ConfigureSentry(options, sentryDsn, sentryRelease, sentryTracesSampleRate, builder.Environment));
+
+    builder.Logging.AddSentry(options =>
+    {
+        ConfigureSentry(options, sentryDsn, sentryRelease, sentryTracesSampleRate, builder.Environment);
+        options.MinimumEventLevel = LogLevel.Error;
+        options.MinimumBreadcrumbLevel = LogLevel.Information;
+    });
+}
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -24,6 +61,18 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddPersistence(builder.Configuration);
 builder.Services.AddRabbitMqMessaging(builder.Configuration);
+builder.Services.AddOpenTelemetry()
+    .WithTracing(tracing =>
+    {
+        tracing
+            .AddAspNetCoreInstrumentation()
+            .AddHttpClientInstrumentation();
+
+        if (sentryEnabled)
+        {
+            tracing.AddSentry();
+        }
+    });
 
 builder.Services.AddOptions<OrchestrationOptions>()
     .Bind(builder.Configuration.GetSection(OrchestrationOptions.SectionName))
@@ -108,6 +157,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<RequestIdMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -119,6 +169,39 @@ app.MapGet("/", () => Results.Ok(new { service = "ModernizationPlatform.API" }))
     .WithName("Root");
 
 app.Run();
+
+static void ConfigureSentry(
+    SentryOptions options,
+    string? dsn,
+    string? release,
+    double tracesSampleRate,
+    IHostEnvironment environment)
+{
+    options.Dsn = string.IsNullOrWhiteSpace(dsn) ? string.Empty : dsn;
+    options.Environment = environment.EnvironmentName;
+    options.Release = release;
+    options.TracesSampleRate = tracesSampleRate;
+    options.SendDefaultPii = false;
+    options.SetBeforeSend(@event =>
+    {
+        if (@event.Extra?.ContainsKey("accessToken") == true)
+        {
+            @event.SetExtra("accessToken", "[redacted]");
+        }
+
+        if (@event.Tags?.ContainsKey("accessToken") == true)
+        {
+            @event.SetTag("accessToken", "[redacted]");
+        }
+
+        return @event;
+    });
+}
+
+static double ResolveSampleRate(string? value, double fallback)
+{
+    return double.TryParse(value, out var parsed) ? parsed : fallback;
+}
 
 // Make Program class accessible for integration tests
 public partial class Program { }

@@ -34,7 +34,7 @@ Este documento consolida todas as tarefas necessárias para implementar a **Plat
 - [x] 15.0 Tela de Inventário e Histórico
 
 ### Fase 5 – Observabilidade e Hardening (Semana 12)
-- [ ] 16.0 Observabilidade com Sentry
+- [x] 16.0 Observabilidade com Sentry
 - [ ] 17.0 Segurança e Hardening
 - [ ] 18.0 Documentação de Deploy On-Premise
 

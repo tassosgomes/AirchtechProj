@@ -6,6 +6,9 @@ using ModernizationPlatform.Worker.Application.DTOs;
 using ModernizationPlatform.Worker.Application.Exceptions;
 using ModernizationPlatform.Worker.Application.Interfaces;
 using ModernizationPlatform.Worker.Application.Services;
+using ModernizationPlatform.Worker.Observability;
+using Sentry;
+using Serilog.Context;
 
 namespace ModernizationPlatform.Worker.Consumers;
 
@@ -31,6 +34,22 @@ public sealed class AnalysisJobHandler : IAnalysisJobHandler
 
     public async Task HandleAsync(AnalysisJobMessage message, CancellationToken cancellationToken)
     {
+        using var activity = WorkerTelemetry.ActivitySource.StartActivity("analysis.job", ActivityKind.Consumer);
+        activity?.SetTag("requestId", message.RequestId.ToString());
+        activity?.SetTag("jobId", message.JobId.ToString());
+        activity?.SetTag("analysisType", message.AnalysisType);
+
+        using var requestIdScope = LogContext.PushProperty("requestId", message.RequestId);
+        using var jobIdScope = LogContext.PushProperty("jobId", message.JobId);
+        using var analysisTypeScope = LogContext.PushProperty("analysisType", message.AnalysisType);
+
+        SentrySdk.ConfigureScope(scope =>
+        {
+            scope.SetTag("requestId", message.RequestId.ToString());
+            scope.SetTag("jobId", message.JobId.ToString());
+            scope.SetTag("analysisType", message.AnalysisType);
+        });
+
         _logger.LogInformation(
             "Job recebido. JobId: {JobId} RequestId: {RequestId} Type: {AnalysisType}",
             message.JobId,
@@ -76,6 +95,14 @@ public sealed class AnalysisJobHandler : IAnalysisJobHandler
                 DurationMs: output.ExecutionDurationMs,
                 ErrorMessage: null),
                 cancellationToken);
+
+            _logger.LogInformation(
+                "Job concluido. JobId: {JobId} RequestId: {RequestId} Type: {AnalysisType} DurationMs: {DurationMs} Status: {Status}",
+                message.JobId,
+                message.RequestId,
+                message.AnalysisType,
+                output.ExecutionDurationMs,
+                "COMPLETED");
         }
         catch (AnalysisOutputParsingException ex)
         {
@@ -126,8 +153,23 @@ public sealed class AnalysisJobHandler : IAnalysisJobHandler
             OutputJson: "{}",
             DurationMs: durationMs,
             ErrorMessage: errorMessage);
+        return PublishFailureResultAsync(message, result, durationMs, cancellationToken);
+    }
 
-        return _resultPublisher.PublishResultAsync(result, cancellationToken);
+    private async Task PublishFailureResultAsync(
+        AnalysisJobMessage message,
+        AnalysisResultMessage result,
+        long durationMs,
+        CancellationToken cancellationToken)
+    {
+        await _resultPublisher.PublishResultAsync(result, cancellationToken);
+        _logger.LogWarning(
+            "Job concluido com falha. JobId: {JobId} RequestId: {RequestId} Type: {AnalysisType} DurationMs: {DurationMs} Status: {Status}",
+            message.JobId,
+            message.RequestId,
+            message.AnalysisType,
+            durationMs,
+            "FAILED");
     }
 
     private static string Truncate(string value, int maxLength)

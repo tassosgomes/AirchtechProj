@@ -60,6 +60,14 @@ public sealed class OrchestrationResultHandler : IAnalysisResultHandler
                 await unitOfWork.SaveChangesAsync(cancellationToken);
             }
 
+            _logger.LogInformation(
+                "Job concluido. JobId: {JobId} RequestId: {RequestId} Type: {AnalysisType} DurationMs: {DurationMs} Status: {Status}",
+                message.JobId,
+                message.RequestId,
+                message.AnalysisType,
+                message.DurationMs,
+                message.Status);
+
             _stateStore.CompleteJobResult(message);
             return;
         }
@@ -76,6 +84,14 @@ public sealed class OrchestrationResultHandler : IAnalysisResultHandler
                 jobRepository.Update(job);
                 await unitOfWork.SaveChangesAsync(cancellationToken);
             }
+
+            _logger.LogWarning(
+                "Job concluido com falha. JobId: {JobId} RequestId: {RequestId} Type: {AnalysisType} DurationMs: {DurationMs} Status: {Status}",
+                message.JobId,
+                message.RequestId,
+                message.AnalysisType,
+                message.DurationMs,
+                message.Status);
 
             _stateStore.CompleteJobResult(message);
             return;

@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\1-Services\ModernizationPlatform.API\ModernizationPlatform.API.csproj" />
     <ProjectReference Include="..\..\2-Application\ModernizationPlatform.Application\ModernizationPlatform.Application.csproj" />
     <ProjectReference Include="..\..\3-Domain\ModernizationPlatform.Domain\ModernizationPlatform.Domain.csproj" />
     <ProjectReference Include="..\..\4-Infra\ModernizationPlatform.Infra\ModernizationPlatform.Infra.csproj" />
