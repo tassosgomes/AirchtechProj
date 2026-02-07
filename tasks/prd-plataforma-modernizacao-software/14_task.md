@@ -1,7 +1,7 @@
 ---
-status: pending
+status: completed
 parallelizable: false
-blocked_by: ["12.0", "13.0", "10.0"]
+blocked_by: []
 ---
 
 <task_context>
@@ -13,7 +13,7 @@ blocked_by: ["12.0", "13.0", "10.0"]
 <unblocks>"15.0"</unblocks>
 </task_context>
 
-# Tarefa 14.0: Dashboard e Visualização de Resultados
+# Tarefa 14.0: Dashboard e Visualização de Resultados ✅ CONCLUÍDA
 
 ## Visão Geral
 
@@ -28,16 +28,16 @@ Implementar o dashboard de acompanhamento do pipeline e a visualização de resu
 
 ## Subtarefas
 
-- [ ] 14.1 Implementar página Dashboard (`/dashboard`): lista de todas as solicitações do usuário com status atual
-- [ ] 14.2 Implementar card de solicitação: URL do repo, provedor, status badge colorido, posição na fila (se QUEUED), data de criação
-- [ ] 14.3 Implementar pipeline visual: indicador de progresso Fila → Discovery → Análises → Consolidação → Completo (com ícones e cores por etapa)
-- [ ] 14.4 Implementar polling de status: buscar `GET /api/v1/analysis-requests` periodicamente (5s) para atualizar dashboard
-- [ ] 14.5 Implementar navegação para detalhes: clicar no card abre `/requests/:id` com detalhes completos
-- [ ] 14.6 Implementar página de detalhes da solicitação (`/requests/:id`): pipeline detalhado, jobs individuais com duração, status de cada pilar
-- [ ] 14.7 Implementar página de resultados: exibir findings consolidados agrupados por severidade, com contadores (badge) por tipo
-- [ ] 14.8 Implementar filtros nos resultados: por severidade, por categoria (pilar), por arquivo
-- [ ] 14.9 Implementar card de finding: severidade (cor), categoria, título, descrição, arquivo com caminho (monospaced)
-- [ ] 14.10 Implementar sumário visual: gráfico ou contadores de findings por severidade (barras ou donut chart)
+- [x] 14.1 Implementar página Dashboard (`/dashboard`): lista de todas as solicitações do usuário com status atual
+- [x] 14.2 Implementar card de solicitação: URL do repo, provedor, status badge colorido, posição na fila (se QUEUED), data de criação
+- [x] 14.3 Implementar pipeline visual: indicador de progresso Fila → Discovery → Análises → Consolidação → Completo (com ícones e cores por etapa)
+- [x] 14.4 Implementar polling de status: buscar `GET /api/v1/analysis-requests` periodicamente (5s) para atualizar dashboard
+- [x] 14.5 Implementar navegação para detalhes: clicar no card abre `/requests/:id` com detalhes completos
+- [x] 14.6 Implementar página de detalhes da solicitação (`/requests/:id`): pipeline detalhado, jobs individuais com duração, status de cada pilar
+- [x] 14.7 Implementar página de resultados: exibir findings consolidados agrupados por severidade, com contadores (badge) por tipo
+- [x] 14.8 Implementar filtros nos resultados: por severidade, por categoria (pilar), por arquivo
+- [x] 14.9 Implementar card de finding: severidade (cor), categoria, título, descrição, arquivo com caminho (monospaced)
+- [x] 14.10 Implementar sumário visual: gráfico ou contadores de findings por severidade (barras ou donut chart)
 
 ## Sequenciamento
 
