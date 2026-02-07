@@ -2,11 +2,8 @@ import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CheckCircle2, FileText, RefreshCw, ShieldCheck, XCircle } from 'lucide-react';
 import { Button, Card, Input } from '../components';
-import {
-  createAnalysisRequest,
-  type AnalysisType,
-  type SourceProvider,
-} from '../services/analysisRequestsApi';
+import { createAnalysisRequest } from '../services/analysisRequestsApi';
+import type { AnalysisType, SourceProvider } from '../types/analysis';
 
 const analysisOptions: Array<{
   value: AnalysisType;

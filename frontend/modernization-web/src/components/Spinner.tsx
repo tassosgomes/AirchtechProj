@@ -1,3 +1,8 @@
-export function Spinner() {
-  return <span className="spinner" role="status" aria-label="Loading" />;
+type SpinnerProps = {
+  className?: string;
+};
+
+export function Spinner({ className }: SpinnerProps) {
+  const classes = ['spinner', className].filter(Boolean).join(' ');
+  return <span className={classes} role="status" aria-label="Loading" />;
 }
