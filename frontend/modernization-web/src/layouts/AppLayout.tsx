@@ -1,5 +1,5 @@
 import { Activity, Database, Layers, LogOut, Radar, Terminal } from 'lucide-react';
-import { NavLink, Outlet, useLocation } from 'react-router-dom';
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '../components/Button';
 import { useAuth } from '../hooks/useAuth';
 
@@ -13,6 +13,12 @@ const navItems = [
 export function AppLayout() {
   const { logout } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
 
   return (
     <div className="app-shell">
@@ -42,7 +48,7 @@ export function AppLayout() {
             <span>status: LIVE | env: local</span>
           </div>
           <div className="header__actions">
-            <Button variant="ghost" onClick={logout}>
+            <Button variant="ghost" onClick={handleLogout}>
               <LogOut size={16} /> Sair
             </Button>
           </div>

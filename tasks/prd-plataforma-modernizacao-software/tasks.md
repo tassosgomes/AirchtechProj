@@ -25,11 +25,11 @@ Este documento consolida todas as tarefas necessárias para implementar a **Plat
 
 ### Fase 3 – Consolidação e Inventário (Semanas 7–8)
 - [x] 10.0 Motor de Consolidação
-- [ ] 11.0 Inventário de Software
+- [x] 11.0 Inventário de Software
 
 ### Fase 4 – Frontend (Semanas 9–11)
-- [ ] 12.0 Setup Frontend React/Vite + Tema Cyber-Technical
-- [ ] 13.0 Telas de Autenticação e Solicitação
+- [x] 12.0 Setup Frontend React/Vite + Tema Cyber-Technical
+- [x] 13.0 Telas de Autenticação e Solicitação
 - [ ] 14.0 Dashboard e Visualização de Resultados
 - [ ] 15.0 Tela de Inventário e Histórico
 
