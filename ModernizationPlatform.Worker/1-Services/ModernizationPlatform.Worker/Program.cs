@@ -81,6 +81,7 @@ static void ConfigureSentry(
 	options.Environment = environment.EnvironmentName;
 	options.Release = release;
 	options.TracesSampleRate = tracesSampleRate;
+	options.UseOpenTelemetry();
 	options.SendDefaultPii = false;
 	options.SetBeforeSend(@event =>
 	{

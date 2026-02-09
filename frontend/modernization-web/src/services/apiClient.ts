@@ -3,7 +3,7 @@ import * as Sentry from '@sentry/react';
 import { authStorage } from './authStorage';
 
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000',
   timeout: 30000,
 });
 

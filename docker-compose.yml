@@ -69,10 +69,9 @@ services:
       dockerfile: Dockerfile
     container_name: modernizationplatform-frontend
     environment:
-      PORT: 3000
       SENTRY_DSN: ${SENTRY_DSN_FRONTEND}
     ports:
-      - "3000:3000"
+      - "3000:80"
     depends_on:
       - api
 

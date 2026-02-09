@@ -1,13 +1,17 @@
-FROM node:20-alpine
+FROM node:20-alpine AS build
 
 WORKDIR /app
 
-COPY package.json ./
-RUN npm install --omit=dev
+COPY modernization-web/package.json modernization-web/package-lock.json* ./modernization-web/
+RUN npm ci --prefix modernization-web
 
-COPY server.js ./
+COPY modernization-web ./modernization-web
+RUN npm run build --prefix modernization-web
 
-ENV PORT=3000
-EXPOSE 3000
+FROM nginx:1.27-alpine
 
-CMD ["npm", "start"]
+COPY --from=build /app/modernization-web/dist /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

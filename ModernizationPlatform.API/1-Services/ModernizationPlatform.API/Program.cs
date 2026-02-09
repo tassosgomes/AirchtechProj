@@ -57,6 +57,11 @@ if (sentryEnabled)
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+builder.Services.AddCors(options =>
+    options.AddDefaultPolicy(policy =>
+        policy.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader()));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddPersistence(builder.Configuration);
@@ -158,6 +163,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseMiddleware<RequestIdMiddleware>();
+app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -181,6 +187,7 @@ static void ConfigureSentry(
     options.Environment = environment.EnvironmentName;
     options.Release = release;
     options.TracesSampleRate = tracesSampleRate;
+    options.UseOpenTelemetry();
     options.SendDefaultPii = false;
     options.SetBeforeSend(@event =>
     {
