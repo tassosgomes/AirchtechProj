@@ -5,8 +5,12 @@ COPY . .
 RUN dotnet restore ./1-Services/ModernizationPlatform.Worker/ModernizationPlatform.Worker.csproj
 RUN dotnet publish ./1-Services/ModernizationPlatform.Worker/ModernizationPlatform.Worker.csproj -c Release -o /app/publish
 
-FROM mcr.microsoft.com/dotnet/runtime:8.0 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
+
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends git \
+	&& rm -rf /var/lib/apt/lists/*
 
 COPY --from=build /app/publish .
 

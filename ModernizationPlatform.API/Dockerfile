@@ -8,6 +8,10 @@ RUN dotnet publish ./1-Services/ModernizationPlatform.API/ModernizationPlatform.
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends git \
+	&& rm -rf /var/lib/apt/lists/*
+
 ENV ASPNETCORE_URLS=http://+:8080
 COPY --from=build /app/publish .
 
